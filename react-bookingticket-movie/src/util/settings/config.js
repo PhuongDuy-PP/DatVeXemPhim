@@ -1,4 +1,5 @@
 
 
-export const DOMAIN = 'http://movienew.cybersoft.edu.vn';
-export const TOKEN = 'acessToken';
+export const DOMAIN = 'http://movieapi.cyberlearn.vn';
+export const TOKEN = 'accessToken';
+export const GROUPID = 'GP00';

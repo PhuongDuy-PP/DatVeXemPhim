@@ -2,10 +2,11 @@ import React, {useEffect} from 'react';
 import { Carousel } from 'antd';
 import {useDispatch, useSelector} from 'react-redux';
 import {getCarouselAction} from '../../../../redux/actions/CarouselAction';
+import './HomeCarousel.css';
 
 
 const contentStyle = {
-    height: '500px',
+    height: '600px',
     color: '#fff',
     lineHeight: '160px',
     textAlign: 'center',
