@@ -5,9 +5,9 @@ import HomeMenu from './HomeMenu/HomeMenu';
 import {useSelector, useDispatch} from 'react-redux';
 import Film from '../../components/Film/Film';
 import MultipleRowSlick from '../../components/RSlick/MultipleRowSlick';
-import HomeCarousel from '../../templates/HomeTemplate/Layout/HomeCarousel/HomeCarousel';
 import { layDanhSachPhimAction } from '../../redux/actions/QuanLyPhimAction';
 import { layDanhSachHeThongRapAction } from '../../redux/actions/QuanLyRapAction';
+import HomeCarousel from '../../templates/HomeTemplate/Layout/HomeCarousel/HomeCarousel';
 
 export default function Home(props) {
     const {arrFilm} = useSelector(state => state.QuanLyPhimReducer);
@@ -30,6 +30,7 @@ export default function Home(props) {
 
     return (
         <div>
+            <HomeCarousel />
             <section className="text-gray-600 body-font">
                 <div className="container px-5 py-24 mx-auto">
                 <MultipleRowSlick arrFilm={arrFilm}/>
