@@ -7,9 +7,11 @@ import Film from '../../components/Film/Film';
 import MultipleRowSlick from '../../components/RSlick/MultipleRowSlick';
 import HomeCarousel from '../../templates/HomeTemplate/Layout/HomeCarousel/HomeCarousel';
 import { layDanhSachPhimAction } from '../../redux/actions/QuanLyPhimAction';
+import { layDanhSachHeThongRapAction } from '../../redux/actions/QuanLyRapAction';
 
 export default function Home(props) {
     const {arrFilm} = useSelector(state => state.QuanLyPhimReducer);
+    const { heThongRapChieu } = useSelector(state => state.QuanLyRapReducer);
     const dispatch = useDispatch();
     console.log('propsHome', props);
 
@@ -22,6 +24,8 @@ export default function Home(props) {
     useEffect(() => {
         const action = layDanhSachPhimAction();
         dispatch(action);   //dispatch function từ thunk
+
+        dispatch(layDanhSachHeThongRapAction());
     }, []);
 
     return (
@@ -36,7 +40,7 @@ export default function Home(props) {
             </section>
 
             <div className="mx-36">
-                <HomeMenu />
+                <HomeMenu heThongRapChieu={heThongRapChieu} />
             </div>
            
         </div>
