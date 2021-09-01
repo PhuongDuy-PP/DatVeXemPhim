@@ -6,7 +6,7 @@ import './HomeCarousel.css';
 
 
 const contentStyle = {
-    height: '600px',
+    height: '800px',
     color: '#fff',
     lineHeight: '160px',
     textAlign: 'center',
