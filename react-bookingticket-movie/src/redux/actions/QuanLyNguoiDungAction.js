@@ -6,14 +6,10 @@ import {history} from '../../App'
 
 export const dangNhapAction = (thongTinDangNhap) => {
 
-
-
     return async (dispatch) => {
 
         try {
             const result = await quanLyNguoiDungService.dangNhap(thongTinDangNhap);
-
-
             if (result.data.statusCode === 200) {
                 dispatch({
                     type: DANG_NHAP_ACTION,
@@ -34,12 +30,7 @@ export const dangNhapAction = (thongTinDangNhap) => {
 }
 
 
-
-
-
 export const layThongTinNguoiDungAction = (thongTinDangNhap) => {
-
-
 
     return async (dispatch) => {
 
