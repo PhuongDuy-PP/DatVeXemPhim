@@ -1,7 +1,7 @@
 import { connection } from "../../index";
 import { quanLyDatVeService } from "../../services/QuanLyDatVeService";
 import { ThongTinDatVe } from "../../_core/models/ThongTinDatVe";
-import { displayLoadingAction, hideLoadingAction } from "./LoadingActions";
+import { displayLoadingAction, hideLoadingAction } from "./LoadingAction";
 import { CHUYEN_TAB, DAT_VE, DAT_VE_HOAN_TAT, SET_CHI_TIET_PHONG_VE } from "./types/QuanLyDatVeType";
 
 export const layChiTietPhongVeAction = (maLichChieu) => {
