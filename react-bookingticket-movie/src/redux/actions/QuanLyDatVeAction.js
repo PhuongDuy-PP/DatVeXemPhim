@@ -35,7 +35,6 @@ export const datVeAction = (thongTinDatVe = new ThongTinDatVe()) => {
 
             dispatch(displayLoadingAction)
 
-
             const result = await quanLyDatVeService.datVe(thongTinDatVe);
             console.log(result.data.content);
             //Đặt vé thành công gọi api load lại phòng vé
@@ -44,7 +43,7 @@ export const datVeAction = (thongTinDatVe = new ThongTinDatVe()) => {
             await dispatch(hideLoadingAction);
 
             let userLogin = getState().QuanLyNguoiDungReducer.userLogin;
-             connection.invoke('datGheThanhCong',userLogin.taiKhoan,thongTinDatVe.maLichChieu);
+            // connection.invoke('datGheThanhCong',userLogin.taiKhoan,thongTinDatVe.maLichChieu);
 
             dispatch({type:CHUYEN_TAB});
 
