@@ -1,81 +1,95 @@
-import React, { Fragment, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react'
+import { Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import { datGheAction, layChiTietPhongVeAction } from '../../redux/actions/QuanLyDatVeAction';
 import style from './Checkout.module.css';
+import { CheckOutlined, CloseOutlined, UserOutlined ,SmileOutlined,HomeOutlined} from '@ant-design/icons'
 import './Checkout.css';
-import { CheckOutlined, CloseOutlined, UserOutlined, SmileOutlined, HomeOutlined } from '@ant-design/icons';
-import { datGheAction, layChiTietPhongVeAction, datVeAction } from '../../redux/actions/QuanLyDatVeAction';
-import { connection } from '../../index';
+import { CHUYEN_TAB, DAT_VE } from '../../redux/actions/types/QuanLyDatVeType'
 import _ from 'lodash';
-import { DAT_VE } from '../../redux/actions/types/QuanLyDatVeType';
 import { ThongTinDatVe } from '../../_core/models/ThongTinDatVe';
+import { datVeAction } from '../../redux/actions/QuanLyDatVeAction';
+
 import { Tabs } from 'antd';
 import { layThongTinNguoiDungAction } from '../../redux/actions/QuanLyNguoiDungAction';
 import moment from 'moment';
+import { connection } from '../../index';
 import { history } from '../../App';
 import { TOKEN, USER_LOGIN } from '../../util/settings/config';
-
-const { TabPane } = Tabs;
-
+import { NavLink } from 'react-router-dom';
 
 
 function Checkout(props) {
+
     const { userLogin } = useSelector(state => state.QuanLyNguoiDungReducer);
+    const { chiTietPhongVe, danhSachGheDangDat,danhSachGheKhachDat } = useSelector(state => state.QuanLyDatVeReducer);
 
-    const { chiTietPhongVe, danhSachGheDangDat, danhSachGheKhachDat } = useSelector(state => state.QuanLyDatVeReducer);
+
+
     const dispatch = useDispatch();
-
+    console.log('danhSachGheDangDat', danhSachGheDangDat);
     useEffect(() => {
-        //gọi hàm tạo ra 1 async function
+        //Gọi hàm tạo ra 1 async function 
         const action = layChiTietPhongVeAction(props.match.params.id);
-
-        //dispatch function này đi
+        //Dispatch function này đi
         dispatch(action);
 
+        //Có 1 client nào thực hiện việc đặt vé thành công mình sẽ load lại danh sách phòng vé của lịch chiếu đó
+        connection.on('datVeThanhCong', () =>  {
+            dispatch(action);
+        })
+
+
+
         //Vừa vào trang load tất cả ghế của các người khác đang đặt
-        // connection.invoke('loadDanhSachGhe',props.match.params.id);
+        connection.invoke('loadDanhSachGhe',props.match.params.id);
 
 
         //Load danh sách ghế đang đặt từ server về (lắng nghe tín hiệu từ server trả về)
-        // connection.on("loadDanhSachGheDaDat", (dsGheKhachDat) => {
-        //     console.log('danhSachGheKhachDat',dsGheKhachDat);
-        //     //Bước 1: Loại mình ra khỏi danh sách 
-        //     dsGheKhachDat = dsGheKhachDat.filter(item => item.taiKhoan !== userLogin.taiKhoan);
-        //     //Bước 2 gộp danh sách ghế khách đặt ở tất cả user thành 1 mảng chung 
+        connection.on("loadDanhSachGheDaDat", (dsGheKhachDat) => {
+            console.log('danhSachGheKhachDat',dsGheKhachDat);
+            //Bước 1: Loại mình ra khỏi danh sách 
+            dsGheKhachDat = dsGheKhachDat.filter(item => item.taiKhoan !== userLogin.taiKhoan);
+            //Bước 2 gộp danh sách ghế khách đặt ở tất cả user thành 1 mảng chung 
 
-        //     let arrGheKhachDat = dsGheKhachDat.reduce((result,item,index)=>{
-        //         let arrGhe = JSON.parse(item.danhSachGhe);
+            let arrGheKhachDat = dsGheKhachDat.reduce((result,item,index)=>{
+                let arrGhe = JSON.parse(item.danhSachGhe);
 
-        //         return [...result,...arrGhe];
-        //     },[]);
+                return [...result,...arrGhe];
+            },[]);
 
-        //     //Đưa dữ liệu ghế khách đặt cập nhật redux
-        //     arrGheKhachDat = _.uniqBy(arrGheKhachDat,'maGhe');
+            //Đưa dữ liệu ghế khách đặt cập nhật redux
+            arrGheKhachDat = _.uniqBy(arrGheKhachDat,'maGhe');
 
-        //     //Đưa dữ liệu ghế khách đặt về redux
-        //     dispatch({
-        //         type:'DAT_GHE',
-        //         arrGheKhachDat
-        //     })
+            //Đưa dữ liệu ghế khách đặt về redux
+            dispatch({
+                type:'DAT_GHE',
+                arrGheKhachDat
+            })
+            
+         })
 
-        //  })
+         //Cài đặt sự kiện khi reload trang
+         window.addEventListener("beforeunload", clearGhe);
 
-        //Cài đặt sự kiện khi reload trang
-        //  window.addEventListener("beforeunload", clearGhe);
+         return () => {
+             clearGhe();
+             window.removeEventListener('beforeunload',clearGhe);
+         }
 
-        //  return () => {
-        //      clearGhe();
-        //      window.removeEventListener('beforeunload',clearGhe);
-        //  }
-    }, []);
+    }, [])
 
-    // const clearGhe = function(event) {
+    const clearGhe = function(event) {
+        
+        connection.invoke('huyDat',userLogin.taiKhoan,props.match.params.id);
 
-    //     connection.invoke('huyDat',userLogin.taiKhoan,props.match.params.id);
+            
+    }
 
 
-    // }
-
+    console.log({ chiTietPhongVe });
     const { thongTinPhim, danhSachGhe } = chiTietPhongVe;
+
 
     const renderSeats = () => {
         return danhSachGhe.map((ghe, index) => {
@@ -89,7 +103,7 @@ function Checkout(props) {
             //Kiểm tra từng render xem có phải ghế khách đặt hay không
             let classGheKhachDat = '';
             let indexGheKD = danhSachGheKhachDat.findIndex(gheKD => gheKD.maGhe === ghe.maGhe);
-            if (indexGheKD !== -1) {
+            if(indexGheKD !== -1){
                 classGheKhachDat = 'gheKhachDat';
             }
             let classGheDaDuocDat = '';
@@ -104,15 +118,15 @@ function Checkout(props) {
 
 
             return <Fragment key={index}>
-
                 <button onClick={() => {
-                    dispatch({
-                        type: DAT_VE,
-                        gheDuocChon: ghe,
-                    })
-                }} disabled={ghe.daDat || classGheKhachDat !== ''} className={`ghe ${classGheVip} ${classGheDaDat} ${classGheDangDat} ${classGheDaDuocDat} ${classGheKhachDat} text-center`} key={index}>
 
-                    {ghe.daDat ? classGheDaDuocDat != '' ? <UserOutlined style={{ marginBottom: 7.5, fontWeight: 'bold' }} /> : <CloseOutlined style={{ marginBottom: 7.5, fontWeight: 'bold' }} /> : classGheKhachDat !== '' ? <SmileOutlined style={{ marginBottom: 7.5, fontWeight: 'bold' }} /> : ghe.stt}
+                    const action = datGheAction(ghe,props.match.params.id);
+                    dispatch(action);
+
+
+                }} disabled={ghe.daDat || classGheKhachDat !=='' } className={`ghe ${classGheVip} ${classGheDaDat} ${classGheDangDat} ${classGheDaDuocDat} ${classGheKhachDat} text-center`} key={index}>
+
+                    {ghe.daDat  ? classGheDaDuocDat != '' ? <UserOutlined style={{ marginBottom: 7.5, fontWeight: 'bold' }} /> : <CloseOutlined style={{ marginBottom: 7.5, fontWeight: 'bold' }} /> : classGheKhachDat !=='' ? <SmileOutlined  style={{ marginBottom: 7.5, fontWeight: 'bold' }} />  :  ghe.stt}
 
                 </button>
 
@@ -123,10 +137,11 @@ function Checkout(props) {
     }
 
     return (
-        <div className="min-h-screen mt-5">
+        <div className=" min-h-screen mt-5" >
             <div className="grid grid-cols-12">
                 <div className="col-span-9">
                     <div className="flex flex-col items-center mt-5">
+
                         <div className="bg-black " style={{ width: '80%', height: 15 }}>
                         </div>
                         <div className={`${style['trapezoid']} text-center`}>
@@ -162,23 +177,21 @@ function Checkout(props) {
                             </tbody>
                         </table>
                     </div>
+
                 </div>
-
-
                 <div className="col-span-3">
-                    <h3 className="text-green-400 text-center text-4xl">
-                        {danhSachGheDangDat.reduce((tongTien, ghe, index) => {
-                            return tongTien += ghe.giaVe;
-                        }, 0).toLocaleString()} đ
-                    </h3>
+                    <h3 className="text-green-400 text-center text-4xl"> {danhSachGheDangDat.reduce((tongTien, ghe, index) => {
+                        return tongTien += ghe.giaVe;
+                    }, 0).toLocaleString()} đ</h3>
                     <hr />
-                    <h3 className="text-xl">{thongTinPhim.tenPhim}</h3>
-                    <p>Địa điểm: {thongTinPhim.tenCumRap}</p>
+                    <h3 className="text-xl mt-2">{thongTinPhim.tenPhim}</h3>
+                    <p>Địa điểm: {thongTinPhim.tenCumRap} - {thongTinPhim.tenRap}</p>
                     <p>Ngày chiếu: {thongTinPhim.ngayChieu} - {thongTinPhim.gioChieu}</p>
                     <hr />
                     <div className="flex flex-row my-5">
                         <div className="w-4/5">
                             <span className="text-red-400 text-lg">Ghế</span>
+
                             {_.sortBy(danhSachGheDangDat, ['stt']).map((gheDD, index) => {
                                 return <span key={index} className="text-green-500 text-xl"> {gheDD.stt}</span>
                             })}
@@ -196,9 +209,10 @@ function Checkout(props) {
                         <i>Email</i> <br />
                         {userLogin.email}
                     </div>
+                    <hr />
                     <div className="my-5">
                         <i>Phone</i> <br />
-                        123456
+                        {userLogin.soDT}
                     </div>
                     <hr />
                     <div className="mb-0 h-full flex flex-col items-center" style={{ marginBottom: 0 }}>
@@ -212,23 +226,22 @@ function Checkout(props) {
                             dispatch(datVeAction(thongTinDatVe));
 
 
-                        }}
-                            className="bg-green-500 text-white w-full text-center py-3 font-bold text-2xl cursor-pointer">
+                        }} className="bg-green-500 text-white w-full text-center py-3 font-bold text-2xl cursor-pointer">
                             ĐẶT VÉ
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-function callback(key) {
-    console.log(key);
-}
 
-export default function CheckoutTab (props) {
+
+
+const { TabPane } = Tabs;
+
+export default function CheckoutTab(props) {
     const {tabActive} = useSelector(state=>state.QuanLyDatVeReducer);
     const dispatch = useDispatch();
     console.log('tabActive',tabActive);
@@ -242,7 +255,7 @@ export default function CheckoutTab (props) {
             })
         }
     },[])
-
+    
     const operations = <Fragment>
         {!_.isEmpty(userLogin) ? <Fragment> <button onClick={()=>{
             history.push('/profile')
@@ -252,26 +265,34 @@ export default function CheckoutTab (props) {
             history.push('/home');
             window.location.reload();
         }} className="text-blue-800">Đăng xuất</button> </Fragment>: ''} 
+
+
     </Fragment>
 
     return <div className="p-5">
-        <Tabs tabBarExtraContent={operations} defaultActiveKey="1" activeKey={tabActive} onChange={(key) => {
+        <Tabs tabBarExtraContent={operations} defaultActiveKey="1" activeKey={tabActive} onChange={(key)=>{
+
             // console.log('key',  key)
-            dispatch({
-                type: 'CHANGE_TAB_ACTIVE',
-                number: key.toString()
+           dispatch({
+                type:'CHANGE_TAB_ACTIVE',
+                number:key.toString()
             })
         }}>
-            <TabPane tab="01 CHỌN GHẾ & THANH TOÁN" key="1">
+            <TabPane tab="01 CHỌN GHẾ & THANH TOÁN" key="1" >
                 <Checkout {...props} />
             </TabPane>
-            <TabPane tab="02. KẾT QUẢ ĐẶT VÉ" key="2">
+            <TabPane tab="02 KẾT QUẢ ĐẶT VÉ" key="2">
                 <KetQuaDatVe {...props} />
             </TabPane>
+            <TabPane tab={<div className="text-center" style={{display:'flex', justifyContent:'center',alignItems:'center'}}><NavLink to="/"><HomeOutlined style={{marginLeft:10,fontSize:25}} /></NavLink></div>} key="3">
+             
+            </TabPane>
         </Tabs>
+
     </div>
 
-};
+}
+
 
 function KetQuaDatVe(props) {
 
@@ -318,6 +339,16 @@ function KetQuaDatVe(props) {
                 </div>
                 <div className="flex flex-wrap -m-2">
                     {renderTicketItem()}
+                    {/* <div className="p-2 lg:w-1/3 md:w-1/2 w-full">
+                        <div className="h-full flex items-center border-gray-200 border p-4 rounded-lg">
+                            <img alt="team" className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4" src="https://picsum.photos/200/200" />
+                            <div className="flex-grow">
+                                <h2 className="text-gray-900 title-font font-medium">Lật mặt 48h</h2>
+                                <p className="text-gray-500">10:20 Rạp 5, Hệ thống rạp cinestar bhd </p>
+                            </div>
+                        </div>
+                    </div> */}
+
                 </div>
             </div>
         </section>

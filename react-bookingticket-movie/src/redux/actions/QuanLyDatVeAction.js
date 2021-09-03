@@ -43,7 +43,7 @@ export const datVeAction = (thongTinDatVe = new ThongTinDatVe()) => {
             await dispatch(hideLoadingAction);
 
             let userLogin = getState().QuanLyNguoiDungReducer.userLogin;
-            // connection.invoke('datGheThanhCong',userLogin.taiKhoan,thongTinDatVe.maLichChieu);
+            connection.invoke('datGheThanhCong',userLogin.taiKhoan,thongTinDatVe.maLichChieu);
 
             dispatch({type:CHUYEN_TAB});
 
