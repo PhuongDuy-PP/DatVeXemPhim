@@ -10,6 +10,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { DOMAIN } from './util/settings/config';
 import * as signalR from '@aspnet/signalr';
+//Import đa ngôn ngữ
+import './i18n';
 
 //Đoạn code để kết nối đến server lắng nghe sự kiện từ server
 export const connection = new signalR.HubConnectionBuilder().withUrl(`${DOMAIN}/DatVeHub`).configureLogging(signalR.LogLevel.Information).build();

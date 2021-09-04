@@ -5,20 +5,28 @@ import { Select } from 'antd';
 import { TOKEN, USER_LOGIN } from '../../../../util/settings/config';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const { Option } = Select;
 
 export default function Header(props){
     const { userLogin } = useSelector(state => state.QuanLyNguoiDungReducer);
+
+    const { t, i18n } = useTranslation();
+
+
+    const handleChange = (value) => {
+        i18n.changeLanguage(value)
+    }
     const renderLogin = () => {
         if (_.isEmpty(userLogin)) {
             return <Fragment>
                 <button onClick={() => {
                     history.push('/login')
-                }} className="self-center px-8 py-3 rounded">Sign in</button>
+                }} className="self-center px-8 py-3 rounded">{t('Sign in')}</button>
                 <button onClick={() => {
                     history.push('/register')
-                }} className="self-center px-8 py-3 font-semibold rounded bg-violet-600 text-coolGray-50">Register</button>
+                }} className="self-center px-8 py-3 font-semibold rounded bg-violet-600 text-coolGray-50">{t('Register')}</button>
 
             </Fragment>
         }
@@ -60,6 +68,13 @@ export default function Header(props){
                 <div className="items-center flex-shrink-0 hidden lg:flex">
                 <div className="items-center flex-shrink-0 hidden lg:flex">
                     {renderLogin()}
+
+                    <Select defaultValue="en" style={{ width: 100 }} onChange={handleChange}>
+                        <Option value="en">Eng</Option>
+                        <Option value="chi">Chi</Option>
+
+                        <Option value="vi">Vi</Option>
+                    </Select>
                 </div>
 
                 {/* <button onClick={() => {
