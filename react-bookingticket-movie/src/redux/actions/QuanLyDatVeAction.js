@@ -1,4 +1,4 @@
-import { connection } from "../../index";
+
 import { quanLyDatVeService } from "../../services/QuanLyDatVeService";
 import { ThongTinDatVe } from "../../_core/models/ThongTinDatVe";
 import { displayLoadingAction, hideLoadingAction } from "./LoadingAction";
@@ -42,9 +42,6 @@ export const datVeAction = (thongTinDatVe = new ThongTinDatVe()) => {
             await dispatch({type:DAT_VE_HOAN_TAT})
             await dispatch(hideLoadingAction);
 
-            let userLogin = getState().QuanLyNguoiDungReducer.userLogin;
-            connection.invoke('datGheThanhCong',userLogin.taiKhoan,thongTinDatVe.maLichChieu);
-
             dispatch({type:CHUYEN_TAB});
 
 
@@ -74,9 +71,6 @@ export const datGheAction = (ghe,maLichChieu) => {
         console.log('maLichChieu',maLichChieu);
         //Biến mảng thành chuỗi
         danhSachGheDangDat = JSON.stringify(danhSachGheDangDat);
-
-        //Call api signalR
-        connection.invoke('datGhe',taiKhoan,danhSachGheDangDat,maLichChieu);
 
     }
 

@@ -25,6 +25,9 @@ i18n
     whitelist:['chi','en','vi'], //Liệt kê các ngôn ngữ
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
+    },
+    react: {
+      useSuspense: false
     }
   });
 
