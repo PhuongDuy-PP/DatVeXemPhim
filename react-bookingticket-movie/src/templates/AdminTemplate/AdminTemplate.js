@@ -44,23 +44,48 @@ const AdminTemplate = (props) => { //path, exact, Component
 
     }
 
+    const renderLogin = () => {
+        return <Fragment>
+            
+            <div 
+            className="avatar">
+                <button onClick={() => {
+                    history.push('/profile')
+                }} className="rounded-full w-14 h-14 ring ring-primary ring-offset-base-100 ring-offset-2">
+                    <img class="w-auto mx-auto rounded-full object-cover object-center" src="https://i1.pngguru.com/preview/137/834/449/cartoon-cartoon-character-avatar-drawing-film-ecommerce-facial-expression-png-clipart.jpg" alt="Avatar Upload" />
+                </button>
+            </div>
+            <button onClick={() => {
+                localStorage.removeItem(USER_LOGIN);
+                localStorage.removeItem(TOKEN);
+                history.push('/home');
+                window.location.reload();
+            }} className="text-yellow-500 font-bold ml-3 mr-5">Sign out</button>
+        </Fragment>
+    }
+
     
 
     const operations = <Fragment>
-        {!_.isEmpty(userLogin) ? <Fragment> <button onClick={() => {
-            history.push('/profile')
-        }}> <div style={{ 
-                            width: 50, 
-                            height: 50, 
-                            display: 'flex', 
-                            justifyContent: 'center', 
-                            alignItems: 'center' }} className="text-2xl ml-5 rounded-full bg-red-200">{userLogin.taiKhoan.substr(0, 1)}</div>Hello ! {userLogin.taiKhoan}</button> <button onClick={() => {
-            localStorage.removeItem(USER_LOGIN);
-            localStorage.removeItem(TOKEN);
-            history.push('/home');
-            window.location.reload();
-        }} className="text-blue-800">Đăng xuất</button> </Fragment> : ''}
-    </Fragment>
+        {!_.isEmpty(userLogin) ? <Fragment> 
+        <header className="p-4 bg-coolGray-100 text-coolGray-800 bg-opacity-40 bg-black text-white fixed w-full z-10">
+            <div className="container flex justify-between h-16">
+                <div  className="flex items-center p-2"></div>
+                <div className="items-center flex-shrink-0 hidden lg:flex">
+                    <div className="items-center flex-shrink-0 hidden lg:flex">
+                        {renderLogin()}
+                    </div>
+                </div>
+                <button className="p-4 lg:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 text-coolGray-800">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+                </Fragment> : ''}
+            </Fragment>
 
     return <Route {...restProps} render={(propsRoute) => { //props.location,props.history,props.match
         const { Component, ...restProps } = props;
@@ -81,9 +106,7 @@ const AdminTemplate = (props) => { //path, exact, Component
                                
                             </Menu.Item>
                             <Menu.Item key="11" icon={<FileOutlined />}>
-                            <NavLink to="/admin/films/addnew">Add new</NavLink>
-
-                               
+                            <NavLink to="/admin/films/addnew">Add new</NavLink> 
                             </Menu.Item>
                         </SubMenu>
                         <Menu.Item key="3" icon={<DesktopOutlined />}>
@@ -105,9 +128,9 @@ const AdminTemplate = (props) => { //path, exact, Component
                     </Menu>
                 </Sider>
                 <Layout className="site-layout">
-                    <Header className="site-layout-background" style={{ padding: 0, backgroundColor: 'white', height: 100 }} >
-                        <div className="text-right pr-10 pt-1">{operations}</div>
-                    </Header>
+                    
+                    <div className="text-right pr-10">{operations}</div>
+                    
                     <Content style={{ margin: '0 16px' }}>
                         <Breadcrumb style={{ margin: '16px 0' }}>
                             {/* <Breadcrumb.Item>User</Breadcrumb.Item>
@@ -124,6 +147,5 @@ const AdminTemplate = (props) => { //path, exact, Component
     }} />
 
 }
-
 
 export default AdminTemplate;
