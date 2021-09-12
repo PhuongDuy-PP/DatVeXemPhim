@@ -13,6 +13,7 @@ import {
 } from '@ant-design/icons';
 import { history } from "../../App";
 import { TOKEN, USER_LOGIN } from "../../util/settings/config";
+import Image from '../../assets/images/boss-baby1.png';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -92,10 +93,11 @@ const AdminTemplate = (props) => { //path, exact, Component
         
         return <Fragment>
             <Layout style={{ minHeight: '100vh' }}>
-                <Sider collapsible collapsed={collapsed} onCollapse={onCollapse} >
-                    <div className="logo p-5">
-                        <img src="https://cyberlearn.vn/wp-content/uploads/2020/03/cyberlearn-min-new-opt2.png" alt="..." />
-                    </div>
+                {/* <Sider collapsible collapsed={collapsed} onCollapse={onCollapse} > */}
+                <Sider>
+                    <NavLink to="/" className="logo p-5">
+                        <img className="ml-10" style={{width: '120px', height: '70px'}} src={Image} alt="..." />
+                    </NavLink>
                     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                         <Menu.Item key="1" icon={<UserOutlined />}>
                             <NavLink to="/admin/users">Users</NavLink>

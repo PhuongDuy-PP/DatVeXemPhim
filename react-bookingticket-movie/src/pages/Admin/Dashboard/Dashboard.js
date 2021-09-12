@@ -1,105 +1,105 @@
-import React from 'react'
+import React, { Fragment, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Table } from 'antd';
+import { layDanhSachNguoiDungAction } from '../../../redux/actions/QuanLyNguoiDungAction';
+import { AudioOutlined, EditOutlined, SearchOutlined, DeleteOutlined,CalendarOutlined } from '@ant-design/icons';
+import { NavLink } from 'react-router-dom';
 
 export default function Dashboard() {
 
+    const {danhSachNguoiDung} = useSelector(state => state.QuanLyNguoiDungReducer);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(layDanhSachNguoiDungAction());
+    }, []);
+    console.log('arrFilmDefault', danhSachNguoiDung);
+
     const columns = [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          filters: [
-            {
-              text: 'Joe',
-              value: 'Joe',
+            title: 'Tài khoản',
+            dataIndex: 'taiKhoan',
+            sorter: (a, b) => {
+                let taiKhoanA = a.taiKhoan.toLowerCase().trim();
+                let taiKhoanB = b.taiKhoan.toLowerCase().trim();
+                if (taiKhoanA > taiKhoanB) {
+                    return 1;
+                }
+                return -1;
             },
-            {
-              text: 'Category 1',
-              value: 'Category 1',
-              children: [
-                {
-                  text: 'Yellow',
-                  value: 'Yellow',
-                },
-                {
-                  text: 'Pink',
-                  value: 'Pink',
-                },
-              ],
-            },
-            {
-              text: 'Category 2',
-              value: 'Category 2',
-              children: [
-                {
-                  text: 'Green',
-                  value: 'Green',
-                },
-                {
-                  text: 'Black',
-                  value: 'Black',
-                },
-              ],
-            },
-          ],
-          filterMode: 'tree',
-          filterSearch: true,
-          onFilter: (value, record) => record.name.includes(value),
-          width: '30%',
-        },
-        {
-          title: 'Age',
-          dataIndex: 'age',
-          sorter: (a, b) => a.age - b.age,
-        },
-        {
-          title: 'Address',
-          dataIndex: 'address',
-          filters: [
-            {
-              text: 'London',
-              value: 'London',
-            },
-            {
-              text: 'New York',
-              value: 'New York',
-            },
-          ],
-          onFilter: (value, record) => record.address.startsWith(value),
-          filterSearch: true,
-          width: '40%',
-        },
-      ];
+            sortDirections: ['descend', 'ascend'],
+            width: '15%'
 
-      const data = [
-        {
-          key: '1',
-          name: 'John Brown',
-          age: 32,
-          address: 'New York No. 1 Lake Park',
+            // sortOrder:'descend'
         },
         {
-          key: '2',
-          name: 'Jim Green',
-          age: 42,
-          address: 'London No. 1 Lake Park',
+            title: 'Họ tên',
+            dataIndex: 'hoTen',
+            width: '15%',
+            sorter: (a, b) => {
+                let hoTenA = a.hoTen.toLowerCase().trim();
+                let hoTenB = b.hoTen.toLowerCase().trim();
+                if (hoTenA > hoTenB) {
+                    return 1;
+                }
+                return -1;
+            },
+            sortDirections: ['descend', 'ascend'],
+            width: '15%'
         },
         {
-          key: '3',
-          name: 'Joe Black',
-          age: 32,
-          address: 'Sidney No. 1 Lake Park',
+            title: 'Email',
+            dataIndex: 'email',
+            sorter: (a, b) => {
+                let emailA = a.email.toLowerCase().trim();
+                let emailB = b.email.toLowerCase().trim();
+                if (emailA > emailB) {
+                    return 1;
+                }
+                return -1;
+            },
+            sortDirections: ['descend', 'ascend'],
+            width: '15%'
         },
         {
-          key: '4',
-          name: 'Jim Red',
-          age: 32,
-          address: 'London No. 2 Lake Park',
+            title: 'Mật khẩu',
+            dataIndex: 'matKhau',
+            width: '15%'
+        },
+        {
+            title: 'Mã loại người dùng',
+            dataIndex: 'maLoaiNguoiDung',
+            width: '15%'
+        },
+        {
+            title: 'Hành động',
+            dataIndex: 'maPhim',
+            render: (text, user) => {
+                return <Fragment>
+                    {/* <NavLink key={1} className=" mr-2  text-2xl" to={`/admin/films/edit/${film.maPhim}`}><EditOutlined style={{ color: 'blue' }} /> </NavLink> */}
+                    <span style={{ cursor: 'pointer' }} key={2} className="text-2xl" onClick={() => {
+                        //Gọi action xoá
+                        if (window.confirm('Bạn có chắc muốn xoá phim ' )) {
+                            //Gọi action
+                            // dispatch(xoaPhimAction(film.maPhim));
+                        }
+
+                    }}><DeleteOutlined style={{ color: 'red' }} /> </span>
+
+                    <NavLink key={1} className=" mr-2 text-2xl" to="/" ><CalendarOutlined style={{ color: 'green' }} /> </NavLink>
+                </Fragment>
+            },
+            sortDirections: ['descend', 'ascend'],
+            width: '15%'
         },
       ];
-    
-    function onChange(pagination, filters, sorter, extra) {
+      
+      const data = danhSachNguoiDung;
+      
+      function onChange(pagination, filters, sorter, extra) {
         console.log('params', pagination, filters, sorter, extra);
-    }
+      }
 
     return (
         <div className="mt-16">

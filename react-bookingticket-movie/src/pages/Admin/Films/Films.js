@@ -118,9 +118,7 @@ export default function Films() {
     }
 
     return (
-        <div>
-
-
+        <div className="mt-16">
             <h3 className="text-4xl">Quản lý Phim</h3>
             <Button className="mb-5" onClick={() => {
                 history.push('/admin/films/addnew');

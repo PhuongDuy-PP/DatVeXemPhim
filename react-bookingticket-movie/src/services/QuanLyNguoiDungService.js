@@ -13,6 +13,10 @@ export class QuanLyNguoiDungService  extends baseService{
     layThongTinNguoiDung = () => {
         return this.post('/api/QuanLyNguoiDung/ThongTinTaiKhoan');
     }
+
+    layDanhsachNguoiDung = () => {
+        return this.get(`/api/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=${GROUPID}`)
+    }
   
 }
 
