@@ -1,13 +1,108 @@
-import React from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { history } from '../../App';
+import { layThongTinNguoiDungAction } from '../../redux/actions/QuanLyNguoiDungAction';
+import { Table } from 'antd';
 
 export default function Profile() {
     const { userLogin } = useSelector(state => state.QuanLyNguoiDungReducer);
-    console.log({ userLogin });
+    const { thongTinNguoiDung } = useSelector(state => state.QuanLyNguoiDungReducer);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(layThongTinNguoiDungAction());
+    }, []);
+    const danhSachDatVe = thongTinNguoiDung.thongTinDatVe;
+    console.log('Thông tin người dùng: ');
+    console.log(thongTinNguoiDung.thongTinDatVe);
+
+    const getIdSeat = (danhSachGhe) => {
+        const reduceShowSeat = danhSachGhe
+        .reduce((listSeat, seat) => {
+          return [...listSeat, seat.tenGhe];
+        }, [])
+        .join(", ");
+        return reduceShowSeat.length > 50 ? reduceShowSeat.substr(0, 50) + '...': reduceShowSeat;
+      };
+
+    const columns = [
+        {
+            title: 'Tên phim',
+            dataIndex: 'tenPhim',
+            width: '10%',
+            sorter: (a, b) => {
+                let tenPhimA = a.tenPhim.toLowerCase().trim();
+                let tenPhimB = b.tenPhim.toLowerCase().trim();
+                if (tenPhimA > tenPhimB) {
+                    return 1;
+                }
+                return -1;
+            },
+            sortDirections: ['descend', 'ascend'],
+        },
+        {
+            title: 'Thời lượng phim',
+            dataIndex: 'thoiLuongPhim',
+            width: '5%',
+        },
+        {
+            title: 'Ngày đặt',
+            dataIndex: 'ngayDat',
+            sorter: (a, b) => {
+                let ngayDatA = a.ngayDat.toLowerCase().trim();
+                let ngayDatB = b.ngayDat.toLowerCase().trim();
+                if (ngayDatA > ngayDatB) {
+                    return 1;
+                }
+                return -1;
+            },
+            render: (text, day, index) => {
+                return (
+                    <i>{new Date(day.ngayDat).toLocaleDateString()},{" "}
+                        {new Date(day.ngayDat).toLocaleTimeString(
+                        "en-US",
+                        { hour: "2-digit", minute: "2-digit" }
+                        )}
+                    </i>
+                )
+            },
+            sortDirections: ['descend', 'ascend'],
+            width: '7%'
+        },
+        {
+            title: 'Tên ghế',
+            dataIndex: "",
+            width: '5%',
+            render: (text, ticket, index) => {
+                return (
+                    <i>
+                        {getIdSeat(ticket.danhSachGhe)}
+                    </i>
+                )
+            }
+        },
+        {
+            title: 'Tên rạp',
+            dataIndex: "",
+            width: '10%',
+            render: (text, ticket, index) => {
+                return (
+                    <i>
+                        {ticket.danhSachGhe[0].tenHeThongRap},{" "}
+                        {ticket.danhSachGhe[0].tenRap}
+                    </i>
+                )
+            }
+        },
+    ];
+
+    const data = danhSachDatVe;
+
+    function onChange(pagination, filters, sorter, extra) {
+        console.log('params', pagination, filters, sorter, extra);
+    }
 
     return (
-        <div className="bg-gray-100">
+        <div className="bg-gray-100 " style={{ minHeight: '140vh' }}>
             <div className="pt-20"></div>
             {/* End of Navbar */}
             < div className="container mx-auto p-5" >
@@ -71,84 +166,52 @@ export default function Profile() {
                                     </div>
                                     <div className="grid grid-cols-2">
                                         <div className="px-4 py-2 font-semibold">Mật khẩu</div>
-                                        <div className="relative w-full">
+                                        <input className="appearance-none block w-full bg-gray-200 text-gray-500 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="password" type="text" value={thongTinNguoiDung.matKhau}></input>
+                                        {/* <div className="relative w-full">
                                             <div className="absolute inset-y-0 right-0 flex items-center px-2">
                                                 <input className="hidden" id="toggle" type="checkbox" />
                                                 <label className="bg-gray-300 hover:bg-gray-400 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label" htmlFor="toggle">show</label>
                                             </div>
                                             <input className="appearance-none border-2 rounded w-full py-3 px-3 leading-tight border-gray-300 bg-gray-100 focus:outline-none focus:border-indigo-700 focus:bg-white text-gray-700 pr-16 font-mono js-password" id="password" type="password" autoComplete="off"
-                                            defaultValue="admin" />
-                                        </div>
+                                            value={userLogin.matKhau} />
+                                        </div> */}
 
                                     </div>
                                     <div className="grid grid-cols-2">
                                         <div className="px-4 py-2 font-semibold">Loại người dùng</div>
                                         <input className="appearance-none block w-full bg-gray-200 text-gray-500 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="loai-nguoi-dung" type="text" value={userLogin.maLoaiNguoiDung}></input>
                                     </div>
-                                    
+
                                 </div>
                             </div>
-                            <button onClick={()=>{
-                                history.push('/admin')
-                            }} 
-                            className="block text-blue-800 text-sm font-semibold rounded-lg bg-green-200 hover:bg-green-500 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
-                                Go to admin page</button>
+                            <button onClick={() => {
+                                history.push('/')
+                            }}
+                                className="mr-2 text-blue-800 text-sm font-semibold rounded-lg bg-green-200 hover:bg-green-500 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
+                                Cập nhật</button>
+                            
+                            {userLogin.maLoaiNguoiDung === 'QuanTri' ? <button onClick={() => {
+                                                                            history.push('/admin')
+                                                                        }}
+                                                                        className="text-blue-800 text-sm font-semibold rounded-lg bg-green-200 hover:bg-green-500 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
+                                Đi đến trang admin</button>:''}
+
+                            
                         </div>
                         {/* End of about section */}
                         <div className="my-4" />
                         {/* Experience and education */}
                         <div className="bg-white p-3 shadow-sm rounded-sm">
-                            <div className="grid grid-cols-2">
-                                <div>
-                                    <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                                        <span clas="text-green-500">
-                                            <svg className="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                            </svg>
-                                        </span>
-                                        <span className="tracking-wide">Experience</span>
-                                    </div>
-                                    <ul className="list-inside space-y-2">
-                                        <li>
-                                            <div className="text-teal-600">Owner at Her Company Inc.</div>
-                                            <div className="text-gray-500 text-xs">March 2020 - Now</div>
-                                        </li>
-                                        <li>
-                                            <div className="text-teal-600">Owner at Her Company Inc.</div>
-                                            <div className="text-gray-500 text-xs">March 2020 - Now</div>
-                                        </li>
-                                        <li>
-                                            <div className="text-teal-600">Owner at Her Company Inc.</div>
-                                            <div className="text-gray-500 text-xs">March 2020 - Now</div>
-                                        </li>
-                                        <li>
-                                            <div className="text-teal-600">Owner at Her Company Inc.</div>
-                                            <div className="text-gray-500 text-xs">March 2020 - Now</div>
-                                        </li>
-                                    </ul>
+                            <div className="p-1">
+                                <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                                    <span clas="text-green-500">
+                                        <svg className="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </span>
+                                    <span className="tracking-wide">Danh sách đặt vé</span>
                                 </div>
-                                <div>
-                                    <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                                        <span clas="text-green-500">
-                                            <svg className="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path fill="#fff" d="M12 14l9-5-9-5-9 5 9 5z" />
-                                                <path fill="#fff" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-                                            </svg>
-                                        </span>
-                                        <span className="tracking-wide">Education</span>
-                                    </div>
-                                    <ul className="list-inside space-y-2">
-                                        <li>
-                                            <div className="text-teal-600">Masters Degree in Oxford</div>
-                                            <div className="text-gray-500 text-xs">March 2020 - Now</div>
-                                        </li>
-                                        <li>
-                                            <div className="text-teal-600">Bachelors Degreen in LPU</div>
-                                            <div className="text-gray-500 text-xs">March 2020 - Now</div>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <Table columns={columns} dataSource={data} onChange={onChange} />
                             </div>
                             {/* End of Experience and education grid */}
                         </div>

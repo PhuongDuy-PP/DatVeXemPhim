@@ -103,8 +103,6 @@ export default function Films() {
     ];
     const data = arrFilmDefault;
 
-
-
     const onSearch = value => {
 
         console.log(value);
