@@ -37,7 +37,7 @@ export default function Login(props) {
                             </g>
                         </svg>
                     </div>
-                    <div className="text-2xl text-indigo-800 tracking-wide ml-2 font-semibold">CYBERLEARN</div>
+                    <NavLink to="/" className="text-2xl text-indigo-800 tracking-wide ml-2 font-semibold">BOSS BABY</NavLink>
                 </div>
             </div>
             <div className="mt-10 px-12 sm:px-24 md:px-48 lg:px-12 lg:mt-16 xl:px-24 xl:max-w-2xl">
@@ -53,12 +53,12 @@ export default function Login(props) {
                             <div className="flex justify-between items-center">
                                 <div  className="text-sm font-bold text-gray-700 tracking-wide">
                                     Mật khẩu
-      </div>
+                                </div>
                                 <div>
                                     <a className="text-xs font-display font-semibold text-indigo-600 hover:text-indigo-800
-                          cursor-pointer">
+                                        cursor-pointer">
                                         Quên mật khẩu ?
-        </a>
+                                    </a>
                                 </div>
                             </div>
                             <input type="password" name="matKhau" onChange={formik.handleChange} className="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"  placeholder="Nhập vào mật khẩu" />
@@ -72,7 +72,7 @@ export default function Login(props) {
                         </div>
                     </div>
                     <div className="mt-12 text-sm font-display font-semibold text-gray-700 text-center">
-                        Bạn chưa có tài khoản ? <NavLink to="register" className="cursor-pointer text-indigo-600 hover:text-indigo-800">Đăng ký</NavLink>
+                        Bạn chưa có tài khoản ? <NavLink to="/register" className="cursor-pointer text-indigo-600 hover:text-indigo-800">Đăng ký</NavLink>
                     </div>
                 </div>
             </div>

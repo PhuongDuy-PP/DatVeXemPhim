@@ -18,8 +18,12 @@ export class QuanLyNguoiDungService  extends baseService{
         return this.get(`/api/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=${GROUPID}`)
     }
 
-    capNhatThongTinNguoiDung = () => {
-        return this.put(`/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung`);
+    capNhatThongTinNguoiDung = (data) => {
+        return this.put(`/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung`, data);
+    }
+
+    dangKyNguoiDung = (newUser) => {
+        return this.post(`/api/QuanLyNguoiDung/DangKy`, newUser);
     }
   
 }
