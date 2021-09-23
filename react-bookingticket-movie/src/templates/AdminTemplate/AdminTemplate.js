@@ -99,9 +99,14 @@ const AdminTemplate = (props) => { //path, exact, Component
                         <img className="ml-10" style={{width: '120px', height: '70px'}} src={Image} alt="..." />
                     </NavLink>
                     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                        <Menu.Item key="1" icon={<UserOutlined />}>
-                            <NavLink to="/admin/users">Users</NavLink>
-                        </Menu.Item>
+                        <SubMenu key="1" icon={<UserOutlined />} title="Users">
+                            <Menu.Item key="8" icon={<UserOutlined />}>
+                                <NavLink to="/admin/users">Users</NavLink>
+                            </Menu.Item>
+                            <Menu.Item key="9" icon={<FileOutlined />}>
+                            <NavLink to="/admin/users/addnew">Add user</NavLink> 
+                            </Menu.Item>
+                        </SubMenu>
                         <SubMenu key="sub1" icon={<FileOutlined />} title="Films">
                             <Menu.Item key="10" icon={<FileOutlined />}>
                                 <NavLink to="/admin/films">Films</NavLink>
@@ -142,7 +147,7 @@ const AdminTemplate = (props) => { //path, exact, Component
                             <Component {...propsRoute} />
                         </div>
                     </Content>
-                    <Footer style={{ textAlign: 'center' }}>Copyright by Đinh Duy Phương</Footer>
+                    <Footer style={{ textAlign: 'center' }}>Copyright by BOSS BABY MOVIE</Footer>
                 </Layout>
             </Layout>
         </Fragment>

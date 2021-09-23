@@ -110,7 +110,7 @@ export default function ShowTime(props) {
                 
 
             >
-                <h3 className="text-2xl">Tạo lịch chiếu - {props.match.params.tenphim}</h3>
+                <h3 className="mt-16 text-4xl">Tạo lịch chiếu - {props.match.params.tenphim}</h3>
                 <img src={film.hinhAnh} alt='...' width={200} height={100} />
                 <Form.Item label="Hệ thống rạp">
                     <Select options={convertSelectHTR()} onChange={handleChangeHeThongRap} placeholder="Chọn hệ thống rạp" />

@@ -7,6 +7,12 @@ import { QuanLyNguoiDungReducer } from './reducers/QuanLyNguoiDungReducer';
 import { QuanLyDatVeReducer } from './reducers/QuanLyDatVeReducer';
 import { LoadingReducer } from './reducers/LoadingReducer';
 
+import createMiddleWareSaga from 'redux-saga';
+import { rootSaga } from './sagas/rootSaga';
+
+
+const middleWareSaga = createMiddleWareSaga();
+
 const rootReducer = combineReducers({
     // State ứng dụng
     CarouselReducer,
@@ -17,4 +23,6 @@ const rootReducer = combineReducers({
     LoadingReducer,
 })
 
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+export const store = createStore(rootReducer, applyMiddleware(thunk, middleWareSaga));
+
+middleWareSaga.run(rootSaga);

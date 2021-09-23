@@ -19,6 +19,7 @@ import Films from './pages/Admin/Films/Films';
 import Showtime from './pages/Admin/Showtime/Showtime';
 import AddNew from './pages/Admin/Films/AddNew/AddNew';
 import Edit from './pages/Admin/Films/Edit/Edit';
+import AddUser from './pages/Admin/Dashboard/AddUser/AddUser';
 
 import { Suspense, lazy } from 'react'
 
@@ -48,6 +49,7 @@ function App() {
         <AdminTemplate path="/admin/films/showtime/:id/:tenphim" exact Component={Showtime} />
 
         <AdminTemplate path="/admin/users" exact Component={Dashboard} />
+        <AdminTemplate path="/admin/users/addnew" exact Component={AddUser} />
         <AdminTemplate path="/admin/showtimes" exact Component={Showtime} />
         <HomeTemplate path="/" exact Component={Home} />
       </Switch>

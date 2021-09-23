@@ -75,7 +75,7 @@ export const capNhatThongTinNguoiDungAction = (user) => {
 export const dangKyNguoiDungAction = (newUser) => {
     return async (dispatch) => {
         try {
-            const result = await quanLyNguoiDungService.dangKyNguoiDung(newUser);
+            const result = await quanLyNguoiDungService.dangKy(newUser);
             if(result.data.statusCode === 200){
                 dispatch({
                     type: 'SET_DANG_KY_NGUOI_DUNG_SUCCESS',
@@ -89,7 +89,65 @@ export const dangKyNguoiDungAction = (newUser) => {
                 payload: {
                   error: error.response.data.content,
                 },
-              });
+            });
+        }
+    }
+}
+
+export const adminThemNguoiDungAction = (newUser) => {
+    return async (dispatch) => {
+        try {
+            const result = await quanLyNguoiDungService.adminThemNguoiDung(newUser)
+            if(result.data.statusCode === 200){
+                dispatch({
+                    type: 'SET_ADMIN_THEM_NGUOI_DUNG_SUCCESS',
+                    newUser: result.data.content
+                });
+            }
+        } catch (error) {
+            // console.log('error', error.response.data);
+            dispatch({
+                type: 'SET_ADMIN_THEM_NGUOI_DUNG_FAIL',
+                payload: {
+                  error: error.response.data.content,
+                },
+            });
+        }
+    }
+}
+
+export const timKiemNguoiDungAction = (data) => {
+    return async (dispatch) => {
+        try{
+            const result = await quanLyNguoiDungService.timKiemNguoiDung(data);
+            console.log(result);
+            if (result.data.statusCode === 200) {
+                dispatch({
+                    type: SET_DANH_SACH_NGUOI_DUNG,
+                    danhSachNguoiDung: result.data.content
+                });
+    
+            }
+        } catch (error) {
+            console.log('error', error);
+            }
+        }
+}
+
+export const xoaNguoiDungAction = (taiKhoan) => {
+    
+
+    return async (dispatch) => {
+        try {
+            //Sử dụng tham số thamSo
+            const result = await quanLyNguoiDungService.xoaNguoiDung(taiKhoan);
+            console.log('result',result.data.content);
+            alert('Xoá người dùng thành công !');
+            //Sau khi xoá load lại danh sách phim mới;
+            dispatch(layDanhSachNguoiDungAction())
+            
+        }catch (errors) {
+            console.log('errors',errors.response?.data)
         }
     }
 }
@@ -108,7 +166,11 @@ export const layThongTinNguoiDungAction = () => {
     return async (dispatch) => {
         
         try {
+            
             dispatch(displayLoadingAction);
+            dispatch({
+                type: 'GET_INFO_USER_REQUEST'
+              })
             const result = await quanLyNguoiDungService.layThongTinNguoiDung();
             if (result.data.statusCode === 200) {
                 dispatch({

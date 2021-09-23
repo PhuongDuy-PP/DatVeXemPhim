@@ -1,9 +1,12 @@
 import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Table } from 'antd';
-import { layDanhSachNguoiDungAction } from '../../../redux/actions/QuanLyNguoiDungAction';
+import { layDanhSachNguoiDungAction, timKiemNguoiDungAction, xoaNguoiDungAction } from '../../../redux/actions/QuanLyNguoiDungAction';
 import { AudioOutlined, EditOutlined, SearchOutlined, DeleteOutlined,CalendarOutlined } from '@ant-design/icons';
 import { NavLink } from 'react-router-dom';
+import { history } from '../../../App';
+import { Input, Space } from 'antd';
+const { Search } = Input;
 
 export default function Dashboard() {
 
@@ -77,17 +80,17 @@ export default function Dashboard() {
             dataIndex: 'maPhim',
             render: (text, user) => {
                 return <Fragment>
-                    {/* <NavLink key={1} className=" mr-2  text-2xl" to={`/admin/films/edit/${film.maPhim}`}><EditOutlined style={{ color: 'blue' }} /> </NavLink> */}
+                    <NavLink key={1} className=" mr-2  text-2xl" to={`/admin/films`}><EditOutlined style={{ color: 'blue' }} /> </NavLink>
                     <span style={{ cursor: 'pointer' }} key={2} className="text-2xl" onClick={() => {
                         //Gọi action xoá
-                        if (window.confirm('Bạn có chắc muốn xoá phim ' )) {
+                        if (window.confirm('Bạn có chắc muốn xoá người dùng này ? ' )) {
                             //Gọi action
-                            // dispatch(xoaPhimAction(film.maPhim));
+                            dispatch(xoaNguoiDungAction(user.taiKhoan));
                         }
 
                     }}><DeleteOutlined style={{ color: 'red' }} /> </span>
 
-                    <NavLink key={1} className=" mr-2 text-2xl" to="/" ><CalendarOutlined style={{ color: 'green' }} /> </NavLink>
+
                 </Fragment>
             },
             sortDirections: ['descend', 'ascend'],
@@ -96,6 +99,13 @@ export default function Dashboard() {
       ];
       
       const data = danhSachNguoiDung;
+
+      const onSearch = value => {
+
+        console.log(value);
+        dispatch(timKiemNguoiDungAction(value));
+
+    };
       
       function onChange(pagination, filters, sorter, extra) {
         console.log('params', pagination, filters, sorter, extra);
@@ -104,6 +114,22 @@ export default function Dashboard() {
     return (
         <div className="mt-16">
             <h3 className="text-4xl">Quản lý người dùng</h3>
+            <button 
+                className="mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded"
+                onClick={() => {
+                    history.push('/admin/users/addnew');
+                }}
+            >
+                Thêm người dùng
+            </button>
+            <Search
+                className="mb-5"
+                placeholder="input search text"
+                enterButton={<SearchOutlined />}
+                size="large"
+
+                onSearch={onSearch}
+            />
             <Table columns={columns} dataSource={data} onChange={onChange} />
         </div>
     )

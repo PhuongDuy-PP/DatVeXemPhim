@@ -1,8 +1,8 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useCallback, useState } from 'react'
 import { Button, Table } from 'antd';
-
+import _ from "lodash";
 import { Input, Space } from 'antd';
-import { AudioOutlined, EditOutlined, SearchOutlined, DeleteOutlined,CalendarOutlined } from '@ant-design/icons';
+import { AudioOutlined, EditOutlined, SearchOutlined, DeleteOutlined, CalendarOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { layDanhSachPhimAction, xoaPhimAction } from '../../../redux/actions/QuanLyPhimAction';
 import { NavLink } from 'react-router-dom';
@@ -92,8 +92,8 @@ export default function Films() {
 
                     }}><DeleteOutlined style={{ color: 'red' }} /> </span>
 
-                    <NavLink key={1} className=" mr-2 text-2xl" to={`/admin/films/showtime/${film.maPhim}/${film.tenPhim}`} onClick={()=>{
-                        localStorage.setItem('filmParams',JSON.stringify(film));
+                    <NavLink key={1} className=" mr-2 text-2xl" to={`/admin/films/showtime/${film.maPhim}/${film.tenPhim}`} onClick={() => {
+                        localStorage.setItem('filmParams', JSON.stringify(film));
                     }}><CalendarOutlined style={{ color: 'green' }} /> </NavLink>
                 </Fragment>
             },
@@ -103,13 +103,17 @@ export default function Films() {
     ];
     const data = arrFilmDefault;
 
+    const [value, setValue] = useState("");
+
     const onSearch = value => {
-
         console.log(value);
+        
         //Gọi api layDanhSachPhim
+        
         dispatch(layDanhSachPhimAction(value));
-
+        
     };
+
 
     function onChange(pagination, filters, sorter, extra) {
         console.log('params', pagination, filters, sorter, extra);
@@ -118,9 +122,15 @@ export default function Films() {
     return (
         <div className="mt-16">
             <h3 className="text-4xl">Quản lý Phim</h3>
-            <Button className="mb-5" onClick={() => {
-                history.push('/admin/films/addnew');
-            }}>Thêm phim</Button>
+            <button 
+                className="mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded"
+                onClick={() => {
+                    history.push('/admin/films/addnew');
+                }}
+            >
+                Thêm phim
+            </button>
+
             {/* <Search placeholder="input search text" onSearch={onSearch} style={{ width: 200 }} /> */}
             <Search
                 className="mb-5"

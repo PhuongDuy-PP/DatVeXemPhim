@@ -4,15 +4,16 @@ import { history } from '../../App';
 import { layThongTinNguoiDungAction, capNhatThongTinNguoiDungAction } from '../../redux/actions/QuanLyNguoiDungAction';
 import { Table } from 'antd';
 import Swal from "sweetalert2";
+import { Redirect, Route } from "react-router";
+import { USER_LOGIN } from '../../util/settings/config';
+import _ from 'lodash';
 
 export default function Profile() {
-
     const { userLogin, thongTinNguoiDung, newUserInfor, loadingInfoUser } = useSelector(state => state.QuanLyNguoiDungReducer);
     // const { thongTinNguoiDung } = useSelector(state => state.QuanLyNguoiDungReducer);
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(layThongTinNguoiDungAction());
-
     }, []);
 
     const [typePassword, settypePassword] = useState("password");
@@ -44,6 +45,13 @@ export default function Profile() {
         maLoaiNguoiDung: newUserInfor?.maLoaiNguoiDung ?? userLogin.maLoaiNguoiDung,
         hoTen: newUserInfor.hoTen ?? userLogin.hoTen
     });
+
+    if (!localStorage.getItem(USER_LOGIN)) {
+        alert('Bạn không có quyền truy cập vào trang này !')
+        history.push('/home');
+        window.location.reload();
+        return <Redirect to='/' />
+    }   
 
     const printValues = e => {
         e.preventDefault();
@@ -326,6 +334,24 @@ export default function Profile() {
                     </div>
                 </div>
             </div >
+            {loadingInfoUser && (
+        
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            display: "flex",
+            backgroundColor: "rgb(255 255 255 / 67%)",
+            zIndex: 1000,
+          }}
+        >
+          Loading
+          {console.log('loading')}
+        </div>
+      )}
         </div >
     )
 }

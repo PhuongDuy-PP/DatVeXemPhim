@@ -12,6 +12,7 @@ const stateDefault = {
     thongTinNguoiDung: {},
     danhSachNguoiDung: [],
 
+    loadingInfoUser: false,
     newUserInfor: {},
 
     responseRegister: null,
@@ -32,13 +33,17 @@ export const QuanLyNguoiDungReducer = (state = stateDefault, action) => {
 
         case SET_THONG_TIN_NGUOI_DUNG :{ 
             state.thongTinNguoiDung = action.thongTinNguoiDung;
-            return {...state};
+            return {...state, loadingInfoUser: false};
         }
 
         case SET_DANH_SACH_NGUOI_DUNG: {
             state.danhSachNguoiDung = action.danhSachNguoiDung;
             return { ...state };
         }
+
+        case 'GET_INFO_USER_REQUEST': {
+            return { ...state, loadingInfoUser: true};
+          }
 
         case CAP_NHAT_THONG_TIN_NGUOI_DUNG: {
             state.newUserInfor = action.newUserInfor;
@@ -64,7 +69,23 @@ export const QuanLyNguoiDungReducer = (state = stateDefault, action) => {
               };
         }
 
+        case 'SET_ADMIN_THEM_NGUOI_DUNG_SUCCESS': {
+            return {
+                ...state,
+                responseRegister: action.newUser,
+                loadingRegister: false
+              };
+        }
+
         case 'SET_DANG_KY_NGUOI_DUNG_FAIL': {
+            return {
+                ...state,
+                errorRegister: action.payload.error,
+                loadingRegister: false,
+              };
+        }
+
+        case 'SET_ADMIN_THEM_NGUOI_DUNG_FAIL': {
             return {
                 ...state,
                 errorRegister: action.payload.error,
