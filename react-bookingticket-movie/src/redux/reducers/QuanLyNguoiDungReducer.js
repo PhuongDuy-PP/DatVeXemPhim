@@ -12,6 +12,11 @@ const stateDefault = {
     thongTinNguoiDung: {},
     danhSachNguoiDung: [],
 
+    responseAdminUpdateUserSuccess: {},
+    isUpdateSuccess: false,
+    getUser: {},
+    isUpdateFail: false,
+
     loadingInfoUser: false,
     newUserInfor: {},
 
@@ -59,6 +64,28 @@ export const QuanLyNguoiDungReducer = (state = stateDefault, action) => {
             }
             localStorage.setItem(USER_LOGIN, JSON.stringify(currentUser));
             return {...state};
+        }
+
+        case 'SET_ADMIN_GET_USER_SUCCESS': {
+            state.getUser = action.updateUser;
+            return {
+                ...state,
+            };
+        }
+
+        case 'SET_ADMIN_CAP_NHAT_NGUOI_DUNG_SUCCESS': {
+            state.responseAdminUpdateUserSuccess = action.userUpdate;
+            state.getUser = action.userUpdate;
+            return {
+                ...state,
+            };
+        }
+
+        case 'SET_ADMIN_CAP_NHAT_NGUOI_DUNG_FAIL': {
+            return {
+                ...state,
+                isUpdateFail: true
+            };
         }
 
         case 'SET_DANG_KY_NGUOI_DUNG_SUCCESS': {

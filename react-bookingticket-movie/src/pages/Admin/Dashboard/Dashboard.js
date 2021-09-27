@@ -6,18 +6,21 @@ import { AudioOutlined, EditOutlined, SearchOutlined, DeleteOutlined,CalendarOut
 import { NavLink } from 'react-router-dom';
 import { history } from '../../../App';
 import { Input, Space } from 'antd';
+import { connect } from "react-redux";
 const { Search } = Input;
 
-export default function Dashboard() {
+function Dashboard(props) {
 
     const {danhSachNguoiDung} = useSelector(state => state.QuanLyNguoiDungReducer);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(layDanhSachNguoiDungAction());
+        props.fetchListUser();
+        // dispatch(layDanhSachNguoiDungAction());
     }, []);
-    console.log('arrFilmDefault', danhSachNguoiDung);
+    // console.log('arrFilmDefault', danhSachNguoiDung);
+    console.log({props})
 
     const columns = [
         {
@@ -65,11 +68,11 @@ export default function Dashboard() {
             sortDirections: ['descend', 'ascend'],
             width: '15%'
         },
-        {
-            title: 'Mật khẩu',
-            dataIndex: 'matKhau',
-            width: '15%'
-        },
+        // {
+        //     title: 'Mật khẩu',
+        //     dataIndex: 'matKhau',
+        //     width: '15%'
+        // },
         {
             title: 'Mã loại người dùng',
             dataIndex: 'maLoaiNguoiDung',
@@ -80,7 +83,7 @@ export default function Dashboard() {
             dataIndex: 'maPhim',
             render: (text, user) => {
                 return <Fragment>
-                    <NavLink key={1} className=" mr-2  text-2xl" to={`/admin/films`}><EditOutlined style={{ color: 'blue' }} /> </NavLink>
+                    <NavLink key={1} className=" mr-2  text-2xl" to={`/admin/users/edit/${user.taiKhoan}`}><EditOutlined style={{ color: 'blue' }} /> </NavLink>
                     <span style={{ cursor: 'pointer' }} key={2} className="text-2xl" onClick={() => {
                         //Gọi action xoá
                         if (window.confirm('Bạn có chắc muốn xoá người dùng này ? ' )) {
@@ -134,3 +137,20 @@ export default function Dashboard() {
         </div>
     )
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+      
+      fetchListUser: () => {
+        dispatch(layDanhSachNguoiDungAction());
+      }
+    }
+  }
+
+const mapStateToProps = state => {
+    return {
+      listUser: state.QuanLyNguoiDungReducer.danhSachNguoiDung,
+    }
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

@@ -21,8 +21,14 @@ export class QuanLyNguoiDungService  extends baseService{
         return this.get(`/api/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=${GROUPID}`)
     }
 
+    // API này dùng riêng cho user
     capNhatThongTinNguoiDung = (data) => {
         return this.put(`/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung`, data);
+    }
+
+    // API này dành riêng cho admin
+    adminCapNhatThongTinNguoiDung = (data) => {
+        return this.post(`/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung`, data)
     }
 
     timKiemNguoiDung = (data='') => {
@@ -39,6 +45,10 @@ export class QuanLyNguoiDungService  extends baseService{
     // API này chỉ dành cho admin thêm user bao gồm khách hàng và quản trị
     adminThemNguoiDung = (newUser) => {
         return this.post(`/api/QuanLyNguoiDung/ThemNguoiDung`, newUser);
+    }
+
+    adminLayThongTinNguoiDung = (taiKhoan) => {
+        return this.post(`/api/QuanLyNguoiDung/LayThongTinNguoiDung?taiKhoan=${taiKhoan}`);
     }
 }
 

@@ -94,6 +94,28 @@ export const dangKyNguoiDungAction = (newUser) => {
     }
 }
 
+export const adminCapNhatThongTinNguoiDungAction = (userDetail) => {
+    return async (dispatch) => {
+        try {
+            const result = await quanLyNguoiDungService.adminCapNhatThongTinNguoiDung(userDetail);
+            if(result.data.statusCode === 200){
+                dispatch({
+                    type: 'SET_ADMIN_CAP_NHAT_NGUOI_DUNG_SUCCESS',
+                    userUpdate: result.data.content
+                });
+            }
+            console.log({result})
+        } catch (error) {
+            // dispatch({
+            //     type: 'SET_ADMIN_CAP_NHAT_NGUOI_DUNG_FAIL',
+            //     payload: {
+            //       error: error.response.data.content,
+            //     },
+            // });
+        }
+    }
+}
+
 export const adminThemNguoiDungAction = (newUser) => {
     return async (dispatch) => {
         try {
@@ -159,6 +181,31 @@ export const resetErrorRegisterAction = () => {
       });
     };
   };
+
+export const adminLayThongTinNguoiDungAction = (taiKhoan) => {
+    return async (dispatch) => {
+        try {
+            dispatch(displayLoadingAction);
+            const result = await quanLyNguoiDungService.adminLayThongTinNguoiDung(taiKhoan);
+            console.log({result})
+            if (result.data.statusCode === 200) {
+                dispatch({
+                    type: 'SET_ADMIN_GET_USER_SUCCESS',
+                    updateUser: result.data.content
+                });
+            }
+            await dispatch(hideLoadingAction);
+
+            console.log('result', result);
+        } catch (error) {
+            console.log({error});
+            dispatch({
+                type: 'SET_ADMIN_UPDATE_USER_FAIL',
+                updateUserError: error.response.data
+            });
+        }
+    }
+}
 
 
 export const layThongTinNguoiDungAction = () => {

@@ -95,7 +95,7 @@ function Checkout(props) {
                         <div className={`${style['trapezoid']} text-center`}>
                             <h3 className="mt-3 text-black">Màn hình</h3>
                         </div>
-                        <div>
+                        <div className="mt-5">
                             {renderSeats()}
                         </div>
                     </div>

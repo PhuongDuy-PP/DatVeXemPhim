@@ -7,7 +7,8 @@ import { dangKyNguoiDungAction, resetErrorRegisterAction } from '../../redux/act
 import { GROUPID } from '../../util/settings/config';
 import Swal from "sweetalert2";
 import { history } from '../../App';
-import './Register.css'
+import './Register.css';
+import * as yup from "yup";
 
 export default function Register(props) {
     const dispatch = useDispatch();
@@ -48,6 +49,22 @@ export default function Register(props) {
         };
       }, []);
 
+    const phoneRegExp =
+      /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+    const signupUserSchema = yup.object().shape({
+      taiKhoan: yup.string().required("*Tài khoản không được bỏ trống !"),
+      matKhau: yup.string().required("*Mật khẩu không được bỏ trống !"),
+      email: yup
+        .string()
+        .required("*Email không được bỏ trống !")
+        .email("* Email không hợp lệ "),
+      soDt: yup
+        .string()
+        .required("*Số điện thoại không được bỏ trống !")
+        .matches(phoneRegExp, "Số điện thoại không hợp lệ!"),
+      hoTen: yup.string().required("*Tên không được bỏ trống !"),
+    });
+
     const formik = useFormik({
         initialValues: {
             taiKhoan: '',
@@ -57,6 +74,7 @@ export default function Register(props) {
             hoTen: '',
             maNhom: `${GROUPID}`
         },
+        validationSchema: signupUserSchema,
         onSubmit: user => {
             console.log('values', user);
             if (!loadingRegister && !responseRegister) {
@@ -91,6 +109,9 @@ export default function Register(props) {
                         <div>
                             <div className="text-sm font-bold text-gray-700 tracking-wide">Tài khoản</div>
                             <input name="taiKhoan" onChange={formik.handleChange} className="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" placeholder="Nhập vào tài khoản" />
+                            {formik.errors.taiKhoan && formik.touched.taiKhoan && (
+                                <p className="text-red-500">{formik.errors.taiKhoan}</p>
+                            )}
                         </div>
                         <div className="mt-8 relative">
                             <div className="flex justify-between items-center">
@@ -124,19 +145,31 @@ export default function Register(props) {
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                                     </svg>
                                 )}
-                        </i>
+                            </i>
+                            {formik.errors.matKhau && formik.touched.matKhau && (
+                                    <p className="text-red-500 absolute">{formik.errors.matKhau}</p>
+                            )}
                         </div>
                         <div className="mt-8">
                             <div className="text-sm font-bold text-gray-700 tracking-wide">Họ tên</div>
                             <input name="hoTen" onChange={formik.handleChange} className="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" placeholder="Nhập họ tên" />
+                            {formik.errors.hoTen && formik.touched.hoTen && (
+                                <p className="text-red-500">{formik.errors.hoTen}</p>
+                            )}
                         </div>
                         <div className="mt-8">
                             <div className="text-sm font-bold text-gray-700 tracking-wide">Email</div>
                             <input name="email" onChange={formik.handleChange} className="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" placeholder="Nhập email" />
+                            {formik.errors.email && formik.touched.email && (
+                                <p className="text-red-500">{formik.errors.email}</p>
+                            )}
                         </div>
                         <div className="mt-8">
                             <div className="text-sm font-bold text-gray-700 tracking-wide">Số điện thoại</div>
                             <input name="soDT" onChange={formik.handleChange} className="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" placeholder="Nhập số điện thoại" />
+                            {formik.errors.soDT && formik.touched.soDT && (
+                                <p className="text-red-500">{formik.errors.soDT}</p>
+                            )}
                         </div>
                         <div className="mt-10">
                             <button className="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide

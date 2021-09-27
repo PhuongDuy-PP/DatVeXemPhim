@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { adminThemNguoiDungAction } from '../../../../redux/actions/QuanLyNguoiDungAction';
 import Swal from "sweetalert2";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import * as yup from "yup";
 
 export default function AddUser(props) {
     const [typePassword, settypePassword] = useState("password");
@@ -35,20 +37,37 @@ export default function AddUser(props) {
         }
     }, [responseRegister]);
 
+    const phoneRegExp =
+      /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+    const signupUserSchema = yup.object().shape({
+      taiKhoan: yup.string().required("*Tài khoản không được bỏ trống !"),
+      matKhau: yup.string().required("*Mật khẩu không được bỏ trống !"),
+      email: yup
+        .string()
+        .required("*Email không được bỏ trống !")
+        .email("* Email không hợp lệ "),
+      soDt: yup
+        .string()
+        .required("*Số điện thoại không được bỏ trống !")
+        .matches(phoneRegExp, "Số điện thoại không hợp lệ!"),
+      hoTen: yup.string().required("*Tên không được bỏ trống !"),
+    });
+
+
     const formik = useFormik({
         initialValues: {
             taiKhoan: '',
             matKhau: '',
             email: '',
-            soDT: '',
+            soDt: '',
             hoTen: '',
             maNhom: '',
             maLoaiNguoiDung: ''
         },
+        validationSchema: signupUserSchema,
         onSubmit: user => {
             console.log('values', user);
             if (!loadingRegister && !responseRegister) {
-                
                 dispatch(adminThemNguoiDungAction(user));
             }
         },
@@ -58,8 +77,8 @@ export default function AddUser(props) {
         <form onSubmit={formik.handleSubmit}>
             <div className="mt-16 lg:col-span-2">
                 <h3 className="text-4xl">Thêm người dùng</h3>
-                <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
-                    <div className="md:col-span-2">
+                <div className=" grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                    <div className="relative mt-5 md:col-span-2">
                         <label htmlFor="taiKhoan">Tài Khoản</label>
                         <input 
                             type="text" 
@@ -68,14 +87,18 @@ export default function AddUser(props) {
                             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                             onChange={formik.handleChange}
                         />
+                        {formik.errors.taiKhoan && formik.touched.taiKhoan && (
+                                <p className="text-red-500 absolute">{formik.errors.taiKhoan}</p>
+                        )}
                     </div>
-                    <div className="md:col-span-3 relative">
+                    <div className="mt-5 md:col-span-3 relative">
                         <label htmlFor="password">Mật khẩu</label>
                         <input 
                             type={typePassword} 
                             name="matKhau" 
                             id="password" 
                             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                            value={formik.values.matKhau}
                             onChange={formik.handleChange}
                         />
                         <i onClick={handleToggleHidePassword}>
@@ -104,8 +127,12 @@ export default function AddUser(props) {
                                         </svg>
                                     )}
                             </i>
+                            {formik.errors.matKhau && formik.touched.matKhau && (
+                                    <p className="text-red-500 absolute">{formik.errors.matKhau}</p>
+                            )}
+                            
                     </div>
-                    <div className="md:col-span-2 mt-4">
+                    <div className="md:col-span-2 mt-10">
                         <label htmlFor="hoTen">Họ tên</label>
                         <input 
                             type="text" 
@@ -114,8 +141,11 @@ export default function AddUser(props) {
                             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" 
                             onChange={formik.handleChange}
                         />
+                        {formik.errors.hoTen && formik.touched.hoTen && (
+                                <p className="text-red-500">{formik.errors.hoTen}</p>
+                        )}
                     </div>
-                    <div className="md:col-span-3 mt-4">
+                    <div className="md:col-span-3 mt-10">
                         <label htmlFor="email">Email</label>
                         <input 
                             type="text" 
@@ -124,16 +154,22 @@ export default function AddUser(props) {
                             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" 
                             onChange={formik.handleChange}
                         />
+                        {formik.errors.email && formik.touched.email && (
+                                <p className="text-red-500">{formik.errors.email}</p>
+                        )}
                     </div>
                     <div className="md:col-span-2 mt-4">
                         <label htmlFor="soDT">Số điện thoại</label>
                         <input 
                             type="text" 
-                            name="soDT" 
+                            name="soDt" 
                             id="soDT" 
                             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" 
                             onChange={formik.handleChange}
                         />
+                        {formik.errors.soDt && formik.touched.soDt && (
+                                <p className="text-red-500">{formik.errors.soDt}</p>
+                        )}
                     </div>
                     <div className="md:col-span-2 mt-4">
                         <label htmlFor="maLoaiNguoiDung">Mã loại người dùng</label>
@@ -152,6 +188,7 @@ export default function AddUser(props) {
                             name="maNhom" 
                             id="maNhom" 
                             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" 
+                            value="GP00"
                             onChange={formik.handleChange}
                         />
                     </div>

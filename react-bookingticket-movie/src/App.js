@@ -20,8 +20,10 @@ import Showtime from './pages/Admin/Showtime/Showtime';
 import AddNew from './pages/Admin/Films/AddNew/AddNew';
 import Edit from './pages/Admin/Films/Edit/Edit';
 import AddUser from './pages/Admin/Dashboard/AddUser/AddUser';
+import Typography from './pages/News/Typography';
 
 import { Suspense, lazy } from 'react'
+import EditUser from './pages/Admin/Dashboard/EditUser/EditUser';
 
 
 
@@ -35,6 +37,7 @@ function App() {
         <HomeTemplate path="/home" exact Component={Home} />
         <HomeTemplate path="/contact" exact Component={Contact} />
         <HomeTemplate path="/news" exact Component={News} />
+        <HomeTemplate path="/news/typography" exact Component={Typography} />
         <HomeTemplate path="/detail/:id" exact Component={Detail} />
         <HomeTemplate path="/profile" exact Component={Profile} />
 
@@ -49,6 +52,7 @@ function App() {
         <AdminTemplate path="/admin/films/showtime/:id/:tenphim" exact Component={Showtime} />
 
         <AdminTemplate path="/admin/users" exact Component={Dashboard} />
+        <AdminTemplate path="/admin/users/edit/:taiKhoan" exact Component={EditUser} />
         <AdminTemplate path="/admin/users/addnew" exact Component={AddUser} />
         <AdminTemplate path="/admin/showtimes" exact Component={Showtime} />
         <HomeTemplate path="/" exact Component={Home} />

@@ -69,8 +69,8 @@ const AdminTemplate = (props) => { //path, exact, Component
 
     const operations = <Fragment>
         {!_.isEmpty(userLogin) ? <Fragment> 
-        <header className="p-4 bg-coolGray-100 text-coolGray-800 bg-opacity-40 bg-black text-white fixed w-full z-10">
-            <div className="container flex justify-between h-16">
+        <header className="p-4 pl-0 bg-coolGray-100 text-coolGray-800 bg-opacity-40 bg-black text-white fixed w-full z-10">
+            <div className="container pr-20 flex justify-between h-16">
                 <div  className="flex items-center p-2"></div>
                 <div className="items-center flex-shrink-0 hidden lg:flex">
                     <div className="items-center flex-shrink-0 hidden lg:flex">

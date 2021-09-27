@@ -2,6 +2,7 @@ import { AppleOutlined, FacebookOutlined } from '@ant-design/icons'
 import _ from 'lodash'
 import React from 'react'
 import { useSelector } from 'react-redux';
+import Image from '../../../../assets/images/boss-baby1.png';
 
 export default function Footer(props) {
 
@@ -17,7 +18,7 @@ export default function Footer(props) {
                     <div className="pb-6 col-span-full md:pb-0 md:col-span-6">
                         <a href="#" className="flex justify-center space-x-3 md:justify-start text-black">
                            
-                            <img src="https://cyberlearn.vn/wp-content/uploads/2020/03/cyberlearn-min-new-opt2.png" alt="cyberlearn.vn"/>
+                            <img src={Image} style={{width: '300px', height: '180px'}} alt="cyberlearn.vn"/>
                         </a>
                     </div>
                     <div className="col-span-6 text-center md:text-left md:col-span-3">
