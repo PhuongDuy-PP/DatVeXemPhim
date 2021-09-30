@@ -1,85 +1,144 @@
-import React from "react";
-import Slider from "react-slick";
-import styleSlick from './MultipleRowSlick.module.css';
-import Film_Flip from "../Film/Film_Flip";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import Movie from "../Movie";
 import { SET_FILM_DANG_CHIEU, SET_FILM_SAP_CHIEU } from "../../redux/actions/types/QuanLyPhimType";
+import { useDispatch, useSelector } from "react-redux";
+import '../../scss/style.css';
 
-function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={`${className} ${styleSlick['slick-prev']}`}
-        style={{ ...style, display: "block" }}
-        onClick={onClick}
-      >
-      </div>
-  
-    );
-  }
-  
-  
-  
-  function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={`${className} ${styleSlick['slick-prev']}`}
-  
-        style={{ ...style, display: "block", left: '-50px' }}
-        onClick={onClick}
-      >
-      </div>
-    );
-  }
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
-const MultipleRowSlick = (props) => {
-    const dispatch = useDispatch();
-    const {dangChieu,sapChieu} = useSelector(state => state.QuanLyPhimReducer);
+function MultipleRowSlick(props) {
+  const listMovie = {
+    infinite: true,
+    speed: 300,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    rows: 2,
+    responsive: [
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 767,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+    ],
+  };
 
-    const renderFilms = () => {
-
-        return props.arrFilm.map((item, index) => {
-          return <div className="mt-2" key={index}>
-              <Film_Flip item={item} />
+  useEffect(() => {
+    props.fetchListMovieDangChieu();
+    props.fetchListMovieSapChieu();
+  }, []);
+  const renderListMovieDangChieu = () => {
+    let listMovie = [...props.listMovie];
+    if (listMovie && listMovie.length > 0) {
+      return props.listMovie.map((item) => {
+        return <Movie key={item.maPhim} Movie={item} LichChieu={"before"} />;
+      });
+    }
+  };
+  const renderListMovieSapChieu = () => {
+    let listMovieSapChieu = [...props.listMovieSapChieu];
+    if (listMovieSapChieu && listMovieSapChieu.length > 0) {
+      return props.listMovieSapChieu.map((item) => {
+        return <Movie key={item.maPhim} Movie={item} LichChieu={"after"} />;
+      });
+    }
+  };
+  return (
+    <div id="lichChieu">
+      <section className="listMovie container">
+        <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li className="nav-item" role="presentation">
+            <a
+              className="nav-link active button"
+              id="pills-dangChieu-tab"
+              data-toggle="pill"
+              href="#pills-dangChieu"
+              role="tab"
+              aria-controls="pills-dangChieu"
+              aria-selected="true"
+            >
+              Phim đang chiếu
+            </a>
+          </li>
+          <li className="nav-item" role="presentation">
+            <a
+              className="nav-link button"
+              id="pills-sapChieu-tab"
+              data-toggle="pill"
+              href="#pills-sapChieu"
+              role="tab"
+              aria-controls="pills-sapChieu"
+              aria-selected="false"
+            >
+              Phim sắp chiếu
+            </a>
+          </li>
+        </ul>
+        <div className="tab-content listMovie__content" id="pills-tabContent">
+          <div
+            className="tab-pane fade show active content__item"
+            id="pills-dangChieu"
+            role="tabpanel"
+            aria-labelledby="pills-dangChieu-tab"
+          >
+            <div className="content__dangChieu">
+              <Slider {...listMovie}>{renderListMovieDangChieu()}</Slider>
+            </div>
           </div>
-        })
-      }
+          <div
+            className="tab-pane fade content__item"
+            id="pills-sapChieu"
+            role="tabpanel"
+            aria-labelledby="pills-sapChieu-tab"
+          >
+            <div className="content__dangChieu">
+              <Slider {...listMovie}>{renderListMovieSapChieu()}</Slider>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
 
-      let activeClassDC = dangChieu===true ? 'active_Film' : 'none_active_Film';
+const mapStateToProps = (state) => {
+  return {
+    listMovie: state.QuanLyPhimReducer.arrFilm,
+    listMovieSapChieu: state.QuanLyPhimReducer.arrFilm,
+  };
+};
 
-      let activeClassSC = sapChieu === true ? 'active_Film' : 'none_active_Film';
-  
-      console.log('activeSC',activeClassSC)
-  
-    const settings = {
-        className: "center variable-width",
-        centerMode: true,
-        infinite: true,
-        centerPadding: "60px",
-        slidesToShow: 2,
-        speed: 500,
-        rows: 2,
-        slidesPerRow: 2,
-        variableWidth: true,
-        nextArrow: <SampleNextArrow />,
-        prevArrow: <SamplePrevArrow />,
-    };
-    return (
-      <div>
-        <button className={`${styleSlick[activeClassDC]} px-8 py-3 font-semibold rounded bg-gray-800 text-white mr-2`} onClick={()=> {
-          const action = {type:SET_FILM_DANG_CHIEU}
-          dispatch(action);
-      }}>PHIM ĐANG CHIẾU</button>
-        <button className={`${styleSlick[activeClassSC]} px-8 py-3 font-semibold rounded bg-white text-gray-800 border-gray-800 border`} onClick={()=>{
-        const action = {type:SET_FILM_SAP_CHIEU}
-        dispatch(action);
-      }}>PHIM SẮP CHIẾU</button>
-        <Slider {...settings}>
-            {renderFilms()}
-        </Slider>
-      </div>
-    );
-  }
-
-export default MultipleRowSlick;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchListMovieDangChieu: () => {
+      const action = {type:SET_FILM_DANG_CHIEU}
+      dispatch(action);
+    },
+    fetchListMovieSapChieu: () => {
+      const action = {type:SET_FILM_SAP_CHIEU}
+      dispatch(action);
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(MultipleRowSlick);

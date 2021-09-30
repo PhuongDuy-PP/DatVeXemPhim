@@ -98,7 +98,6 @@ const AddNew = () => {
 
   return (
     <>
-
       <Form
         onSubmitCapture={formik.handleSubmit}
         labelCol={{
@@ -114,7 +113,7 @@ const AddNew = () => {
         onValuesChange={onFormLayoutChange}
         size={componentSize}
       >
-        <h3>Thêm mới phim </h3>
+        <h1 className="text-4xl mt-20">Thêm mới phim </h1>
         <Form.Item label="Form Size" name="size">
           <Radio.Group>
             <Radio.Button value="small">Small</Radio.Button>

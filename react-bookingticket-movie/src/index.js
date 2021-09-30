@@ -8,8 +8,18 @@ import { store } from './redux/configStore';
 import 'antd/dist/antd.css';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import 'font-awesome/css/font-awesome.min.css';
 //Import đa ngôn ngữ
 import './i18n';
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist//js/bootstrap.min.js";
+import "jquery/dist/jquery.min.js";
+import "popper.js/dist/popper.min.js";
+
+
+// Main CSS
+// import "./scss/main.scss";
 
 ReactDOM.render(
   <Provider store={store}>

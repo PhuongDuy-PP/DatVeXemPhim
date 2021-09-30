@@ -132,7 +132,7 @@ const Edit = (props) => {
         onValuesChange={onFormLayoutChange}
         size={componentSize}
       >
-        <h3>Thêm mới phim </h3>
+        <h3 className="mt-20 text-4xl">Cập nhật phim </h3>
         <Form.Item label="Form Size" name="size">
           <Radio.Group>
             <Radio.Button value="small">Small</Radio.Button>

@@ -55,7 +55,7 @@ export default function Header(props) {
     }
 
     return (
-        <header className="p-4 bg-coolGray-100 text-coolGray-800 bg-opacity-40 bg-black text-white fixed w-full z-10">
+        <header className="p-4 bg-coolGray-100 text-coolGray-800  bg-white text-black fixed w-full z-10">
             <div className="container flex justify-between h-16 mx-auto">
                 <NavLink to="/" aria-label="Back to homepage" className="flex items-center p-2">
                     <img style={{width: '130px', height: '70px'}} src={Image} alt="cybersoft" />
@@ -63,15 +63,15 @@ export default function Header(props) {
                 <ul className="items-stretch hidden space-x-3 lg:flex">
                     <li className="flex">
                         <NavLink to="/home" className="flex items-center -mb-0.5 font-bold border-b-2 px-4 border-transparent text-violet-600 
-                        border-violet-600 text-white" activeClassName="border-b-2 border-white">Home</NavLink>
+                        border-violet-600 text-black" activeClassName="border-b-2 border-blue-800">Home</NavLink>
                     </li>
                     <li className="flex">
                         <NavLink to="/contact" className="flex items-center -mb-0.5 font-bold border-b-2 px-4 
-                        border-transparent text-white" activeClassName="border-b-2 border-white">Contact</NavLink>
+                        border-transparent text-black" activeClassName="border-b-2 border-blue-800">Contact</NavLink>
                     </li>
                     <li className="flex">
                         <NavLink to="/news" className="flex items-center -mb-0.5 font-bold border-b-2 px-4 
-                        border-transparent text-white" activeClassName="border-b-2 border-white">News</NavLink>
+                        border-transparent text-black" activeClassName="border-b-2 border-blue-800">News</NavLink>
                     </li>
                 </ul>
 

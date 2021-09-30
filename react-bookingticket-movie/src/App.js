@@ -20,7 +20,6 @@ import Showtime from './pages/Admin/Showtime/Showtime';
 import AddNew from './pages/Admin/Films/AddNew/AddNew';
 import Edit from './pages/Admin/Films/Edit/Edit';
 import AddUser from './pages/Admin/Dashboard/AddUser/AddUser';
-import Typography from './pages/News/Typography';
 
 import { Suspense, lazy } from 'react'
 import EditUser from './pages/Admin/Dashboard/EditUser/EditUser';
@@ -37,7 +36,6 @@ function App() {
         <HomeTemplate path="/home" exact Component={Home} />
         <HomeTemplate path="/contact" exact Component={Contact} />
         <HomeTemplate path="/news" exact Component={News} />
-        <HomeTemplate path="/news/typography" exact Component={Typography} />
         <HomeTemplate path="/detail/:id" exact Component={Detail} />
         <HomeTemplate path="/profile" exact Component={Profile} />
 

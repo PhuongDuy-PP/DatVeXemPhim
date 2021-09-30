@@ -36,18 +36,23 @@ export default class Demo extends React.PureComponent {
                         }
                             key={index}>
                             {/*Load phim tương ứng */}
+                            <div  style={{overflowY: 'scroll', height: '500px'}}>
                             {cumRap.danhSachPhim.map((phim, index) => {
                                 return <Fragment key={index}>
                                     <div className="my-5" >
-                                        <div style={{ display: 'flex' }}>
+                                        <div style={{ display: 'flex'}}>
                                             <img style={{ height: 75, width: 75 }} src={phim.hinhAnh} alt={phim.tenPhim} onError={(e) => { e.target.onerror = null; e.target.src = "https://picsum.photos/75/75" }} />
 
-                                            <div className="ml-2">
+                                            <div 
+                                                className="ml-2"   
+                                            >
                                                 <h1 className="text-2xl text-green-700" >{phim.tenPhim}</h1>
                                                 <p>{cumRap.diaChi}</p>
-                                                <div className="grid grid-cols-6 gap-6">
-                                                    {phim.lstLichChieuTheoPhim?.slice(0, 12).map((lichChieu, index) => {
-                                                        return <NavLink className="text-2xl text-green-400" to={`/checkout/${lichChieu.maLichChieu}`} key={index}>
+                                                <div 
+                                                    className="grid grid-cols-6 gap-6"
+                                                >
+                                                    {phim.lstLichChieuTheoPhim?.slice(0, 5).map((lichChieu, index) => {
+                                                        return <NavLink className="text-base font-bold text-green-400" to={`/checkout/${lichChieu.maLichChieu}`} key={index}>
                                                             {moment(lichChieu.ngayChieuGioChieu).format('hh:mm A')}
                                                         </NavLink>
                                                     })}
@@ -61,7 +66,7 @@ export default class Demo extends React.PureComponent {
                                     <hr />
                                 </Fragment>
                             })}
-
+                            </div>
 
                         </TabPane>
 

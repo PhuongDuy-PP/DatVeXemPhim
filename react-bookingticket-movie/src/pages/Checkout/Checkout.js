@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { datGheAction, layChiTietPhongVeAction } from '../../redux/actions/QuanLyDatVeAction';
 import style from './Checkout.module.css';
-import { CheckOutlined, CloseOutlined, UserOutlined ,SmileOutlined,HomeOutlined} from '@ant-design/icons'
+import { CheckOutlined, CloseOutlined, UserOutlined, SmileOutlined, HomeOutlined } from '@ant-design/icons'
 import './Checkout.css';
 import { CHUYEN_TAB, DAT_VE } from '../../redux/actions/types/QuanLyDatVeType'
 import _ from 'lodash';
@@ -21,7 +21,7 @@ import { NavLink } from 'react-router-dom';
 function Checkout(props) {
 
     const { userLogin } = useSelector(state => state.QuanLyNguoiDungReducer);
-    const { chiTietPhongVe, danhSachGheDangDat,danhSachGheKhachDat } = useSelector(state => state.QuanLyDatVeReducer);
+    const { chiTietPhongVe, danhSachGheDangDat, danhSachGheKhachDat } = useSelector(state => state.QuanLyDatVeReducer);
 
 
 
@@ -51,7 +51,7 @@ function Checkout(props) {
             //Kiểm tra từng render xem có phải ghế khách đặt hay không
             let classGheKhachDat = '';
             let indexGheKD = danhSachGheKhachDat.findIndex(gheKD => gheKD.maGhe === ghe.maGhe);
-            if(indexGheKD !== -1){
+            if (indexGheKD !== -1) {
                 classGheKhachDat = 'gheKhachDat';
             }
             let classGheDaDuocDat = '';
@@ -68,13 +68,13 @@ function Checkout(props) {
             return <Fragment key={index}>
                 <button onClick={() => {
 
-                    const action = datGheAction(ghe,props.match.params.id);
+                    const action = datGheAction(ghe, props.match.params.id);
                     dispatch(action);
 
 
-                }} disabled={ghe.daDat || classGheKhachDat !=='' } className={`ghe ${classGheVip} ${classGheDaDat} ${classGheDangDat} ${classGheDaDuocDat} ${classGheKhachDat} text-center`} key={index}>
+                }} disabled={ghe.daDat || classGheKhachDat !== ''} className={`ghe ${classGheVip} ${classGheDaDat} ${classGheDangDat} ${classGheDaDuocDat} ${classGheKhachDat} text-center`} key={index}>
 
-                    {ghe.daDat  ? classGheDaDuocDat != '' ? <UserOutlined style={{ marginBottom: 7.5, fontWeight: 'bold' }} /> : <CloseOutlined style={{ marginBottom: 7.5, fontWeight: 'bold' }} /> : classGheKhachDat !=='' ? <SmileOutlined  style={{ marginBottom: 7.5, fontWeight: 'bold' }} />  :  ghe.stt}
+                    {ghe.daDat ? classGheDaDuocDat != '' ? <UserOutlined style={{ marginBottom: 7.5, fontWeight: 'bold' }} /> : <CloseOutlined style={{ marginBottom: 7.5, fontWeight: 'bold' }} /> : classGheKhachDat !== '' ? <SmileOutlined style={{ marginBottom: 7.5, fontWeight: 'bold' }} /> : ghe.stt}
 
                 </button>
 
@@ -190,40 +190,53 @@ function Checkout(props) {
 const { TabPane } = Tabs;
 
 export default function CheckoutTab(props) {
-    const {tabActive} = useSelector(state=>state.QuanLyDatVeReducer);
+    const { tabActive } = useSelector(state => state.QuanLyDatVeReducer);
     const dispatch = useDispatch();
-    console.log('tabActive',tabActive);
+    console.log('tabActive', tabActive);
 
-    const {userLogin} = useSelector(state=>state.QuanLyNguoiDungReducer)
-    useEffect(()=>{
-        return ()=> {
+    const { userLogin } = useSelector(state => state.QuanLyNguoiDungReducer)
+    useEffect(() => {
+        return () => {
             dispatch({
-                type:'CHANGE_TAB_ACTIVE',
-                number:'1'
+                type: 'CHANGE_TAB_ACTIVE',
+                number: '1'
             })
         }
-    },[])
-    
+    }, [])
+
     const operations = <Fragment>
-        {!_.isEmpty(userLogin) ? <Fragment> <button onClick={()=>{
-            history.push('/profile')
-        }}> <div style={{width:50,height:50,display:'flex',justifyContent:'center',alignItems:'center'}} className="text-2xl ml-5 rounded-full bg-red-200">{userLogin.taiKhoan.substr(0,1)}</div>Hello ! {userLogin.taiKhoan}</button> <button onClick={()=>{
-            localStorage.removeItem(USER_LOGIN);
-            localStorage.removeItem(TOKEN);
-            history.push('/home');
-            window.location.reload();
-        }} className="text-blue-800">Đăng xuất</button> </Fragment>: ''} 
+        {!_.isEmpty(userLogin) ? <Fragment> 
+            <div className="flex items-stretch">
+                <button onClick={() => {history.push('/profile')}}> 
+                    <div className="avatar mt-3 p-1">
+                        <button onClick={() => {
+                            history.push('/profile')
+                        }} className="rounded-full w-12 h-12 ring ring-primary ring-offset-base-100 ring-offset-2">
+                            <img class="w-auto mx-auto rounded-full object-cover object-center" src="https://i1.pngguru.com/preview/137/834/449/cartoon-cartoon-character-avatar-drawing-film-ecommerce-facial-expression-png-clipart.jpg" alt="Avatar Upload" />
+                        </button>
+                    </div>
+                {/* Hello ! {userLogin.taiKhoan} */}
+                </button>
+                <button onClick={() => {
+                    localStorage.removeItem(USER_LOGIN);
+                    localStorage.removeItem(TOKEN);
+                    history.push('/home');
+                    window.location.reload();
+                }} className="text-yellow-500 font-bold ml-3 mr-5 ">Sign out</button> 
+            </div>
+            
+        </Fragment> : ''}
 
 
     </Fragment>
 
-    return <div className="p-5">
-        <Tabs tabBarExtraContent={operations} defaultActiveKey="1" activeKey={tabActive} onChange={(key)=>{
+    return <div className="p-5 pt-0">
+        <Tabs tabBarExtraContent={operations} defaultActiveKey="1" activeKey={tabActive} onChange={(key) => {
 
             // console.log('key',  key)
-           dispatch({
-                type:'CHANGE_TAB_ACTIVE',
-                number:key.toString()
+            dispatch({
+                type: 'CHANGE_TAB_ACTIVE',
+                number: key.toString()
             })
         }}>
             <TabPane tab="01 CHỌN GHẾ & THANH TOÁN" key="1" >
@@ -232,8 +245,8 @@ export default function CheckoutTab(props) {
             <TabPane tab="02 KẾT QUẢ ĐẶT VÉ" key="2">
                 <KetQuaDatVe {...props} />
             </TabPane>
-            <TabPane tab={<div className="text-center" style={{display:'flex', justifyContent:'center',alignItems:'center'}}><NavLink to="/"><HomeOutlined style={{marginLeft:10,fontSize:25}} /></NavLink></div>} key="3">
-             
+            <TabPane tab={<div className="text-center" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><NavLink to="/"><HomeOutlined style={{ marginLeft: 10, fontSize: 25 }} /></NavLink></div>} key="3">
+
             </TabPane>
         </Tabs>
 

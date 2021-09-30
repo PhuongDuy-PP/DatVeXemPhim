@@ -1,44 +1,62 @@
-import React, {useEffect} from 'react';
-import { Carousel } from 'antd';
-import {useDispatch, useSelector} from 'react-redux';
-import {getCarouselAction} from '../../../../redux/actions/CarouselAction';
-import './HomeCarousel.css';
+import React, { Component } from 'react';
 
+import "slick-carousel/slick/slick.css";
+// import "~slick-carousel/slick/slick-theme.css";
+import Slider from 'react-slick';
+// import sdfds from "../../"
 
-const contentStyle = {
-    height: '800px',
-    color: '#fff',
-    lineHeight: '160px',
-    textAlign: 'center',
-    backgroundPosition: 'center',
-    backgroundSize: '100%',
-    backgroundRepeat: 'no-repeat',
-  };
-
-export default function HomeCarousel(props) {
-    const {arrImg} = useSelector(state => state.CarouselReducer);
-    const dispatch = useDispatch();
-
-    // sẽ tự kích hoạt khi component load ra
-    useEffect(() => {
-        dispatch(getCarouselAction());
-    }, []);
-
-    console.log('arrImg', arrImg);
-
-      const renderImg = () => {
-          return arrImg.map((item, index) => {
-              return <div key={index}>
-              <div style={{...contentStyle, backgroundImage: `url(${item.hinhAnh})`}}>
-                  <img src={item.hinhAnh} className="w-full opacity-0" alt="123" />
+export default function HomeCarousel() {
+  const settings = {
+    dots: true,
+    infinite: true,
+    autoplay: true,
+    speed: 300,
+    slidesToShow: 1,
+    arrows: true,
+    slidesToScroll: 1,
+    className: "slides"
+  }
+  const photos = [
+    {
+      name: 'Photo 1',
+      url: './images/banner1.jpg',
+      link: 'https://www.youtube.com/watch?v=XRm1P7oGpMQ&ab_channel=CJEntertainmentVietnam'
+    },
+    {
+      name: 'Photo 2',
+      url: './images/banner2.jpg',
+      link: 'https://www.youtube.com/watch?v=VAvF3VBxOac&feature=emb_logo'
+    },
+    {
+      name: 'Photo 3',
+      url: './images/banner3.jpg',
+      link: 'https://www.youtube.com/watch?v=x3ggvoYbcLo&ab_channel=CGVCinemasVietnam'
+    },
+    {
+      name: 'Photo 4',
+      url: './images/banner4.jpg',
+      link: 'https://www.youtube.com/watch?v=Vgb1uUmpQNU&feature=emb_logo&ab_channel=LotteCinemaVietNam'
+    }
+  ]
+  return (
+    <div>
+      <section className="carousel pt-28">
+        <Slider {...settings}>
+          {photos.map((photo, index) => {
+            return (
+              <div key={index} className="carousel-inner">
+                {/* <img width="100%" src={photo.url} className="img-fluid" /> */}
+                {/* <a href="https://www.youtube.com/watch?v=XSGBVzeBUbk" data-lity><i className="fa fa-play" id="viewTrailer" /></a> */}
+                <img src={photo.url} alt="anh_carousel" className="img-fluid w-100" />
+                <div className="playTrailer">
+                  <a href={photo.link} data-lity><i className="fa fa-play" id="viewTrailer" /></a>
+                </div>
               </div>
-          </div>
-          })
-      }
+            )
+          })}
+        </Slider>
+      </section>
+    </div>
 
-    return (
-        <Carousel effect="fade">
-            {renderImg()}
-        </Carousel>
-    );
+  )
 }
