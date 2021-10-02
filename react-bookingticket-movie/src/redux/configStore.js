@@ -6,6 +6,7 @@ import { QuanLyRapReducer } from './reducers/QuanLyRapReducer';
 import { QuanLyNguoiDungReducer } from './reducers/QuanLyNguoiDungReducer';
 import { QuanLyDatVeReducer } from './reducers/QuanLyDatVeReducer';
 import { LoadingReducer } from './reducers/LoadingReducer';
+import { ModalTrailerReducer } from './reducers/ModalTrailerReducer'
 
 import createMiddleWareSaga from 'redux-saga';
 import { rootSaga } from './sagas/rootSaga';
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     QuanLyNguoiDungReducer,
     QuanLyDatVeReducer,
     LoadingReducer,
+    ModalTrailerReducer,
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunk, middleWareSaga));

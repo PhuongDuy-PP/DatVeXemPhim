@@ -19,7 +19,7 @@ import "popper.js/dist/popper.min.js";
 
 
 // Main CSS
-// import "./scss/main.scss";
+import "./scss/main.scss";
 
 ReactDOM.render(
   <Provider store={store}>

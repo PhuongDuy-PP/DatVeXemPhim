@@ -1,6 +1,7 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import BtnPlay from '../../components/Movie/BtnPlay/index';
 
 
 function Movie(props) {
@@ -11,9 +12,11 @@ function Movie(props) {
         <div className="movie__img">
           <LazyLoadImage src={props.Movie.hinhAnh} alt="film-1" className="img-fluid" />
           <div className="icon__play">
-            <a className="video" href={props.Movie.trailer} data-lity>
+            {/* <a className="video" href={props.Movie.trailer} data-lity>
               <i className="fa fa-play" />
-            </a>
+            </a> */}
+            <i className="fa fa-play" />
+            <BtnPlay cssRoot={"play"} width={150} height={150} urlYoutube={props.Movie.trailer} />
           </div>
           <div className="danhGia" style={{ visibility: props.LichChieu === "before" ? "visible" : "hidden" }}>{props.Movie.danhGia}
             <i className="fa fa-star icon__start" />

@@ -13,6 +13,7 @@ export default function Profile() {
     // const { thongTinNguoiDung } = useSelector(state => state.QuanLyNguoiDungReducer);
     const dispatch = useDispatch();
     useEffect(() => {
+        window.scrollTo(0, 0);
         dispatch(layThongTinNguoiDungAction());
     }, []);
 
