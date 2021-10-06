@@ -3,19 +3,9 @@ import _ from 'lodash'
 import React from 'react'
 import { useSelector } from 'react-redux';
 import Image from '../../../../assets/images/boss-baby1.png';
-import { Link } from "react-router-dom";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import Slider from "react-slick";
+
 
 export default function Footer(props) {
-
-    const slick = {
-        arrows: false,
-        autoplay: true,
-        infinite: true,
-        autoplaySpeed: 2000,
-        next: false,
-    };
 
     const { heThongRapChieu } = useSelector(state => state.QuanLyRapReducer);
 
@@ -23,76 +13,7 @@ export default function Footer(props) {
 
 
     return (
-        <footer className="footer py-6 bg-coolGray-100 text-coolGray-900 bg-gray-800 ">
-            <div className="footer__introduce " id="ungDung">
-                <div className="container">
-                    <div className="row">
-                        <div className="intro__info col-lg-6 text-center text-lg-left">
-                            <h2>Ứng dụng tiện lợi dành cho người yêu điện ảnh</h2>
-                            <p>
-                                Không chỉ đặt vé, bạn có thể bình luận phim, chấm điểm rạp và
-                                đổi quà hấp dẫn
-                            </p>
-                            <button className="bt mb-2">App miễn phí - Tải về ngay!</button>
-                            <br />
-                            <span>
-                                {" "}
-                                Fox có 2 phiên bản{" "}
-                                <Link to="#" href="#">
-                                    iOS
-                                </Link>{" "}
-                                và{" "}
-                                <Link to="#" href="#">
-                                    Android
-                                </Link>
-                            </span>
-                        </div>
-
-                        <div className="intro__img col-lg-6 mt-5 mt-lg-0">
-                            <LazyLoadImage
-                                src="./images/mobile.png"
-                                alt="img_mobie"
-                                className="img__mobile"
-                            />
-
-                            <div className="img__app">
-                                <Slider {...slick}>
-                                    <LazyLoadImage
-                                        src="./images/slide1.jpg"
-                                        alt="img_slide1"
-                                        className="img-fluid"
-                                    />
-                                    <LazyLoadImage
-                                        src="./images/slide2.jpg"
-                                        alt="img_slide2"
-                                        className="img-fluid"
-                                    />
-                                    <LazyLoadImage
-                                        src="./images/slide3.jpg"
-                                        alt="img_slide3"
-                                        className="img-fluid"
-                                    />
-                                    <LazyLoadImage
-                                        src="./images/slide4.jpg"
-                                        alt="img_slide4"
-                                        className="img-fluid"
-                                    />
-                                    <LazyLoadImage
-                                        src="./images/slide5.jpg"
-                                        alt="img_slide5"
-                                        className="img-fluid"
-                                    />
-                                    <LazyLoadImage
-                                        src="./images/slide6.jpg"
-                                        alt="img_slide6"
-                                        className="img-fluid"
-                                    />
-                                </Slider>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <footer className="py-6 bg-coolGray-100 text-coolGray-900 bg-gray-800 ">
 
             <div className="container px-6 mx-auto space-y-6 divide-y divide-gray-400 md:space-y-12 divide-opacity-50">
                 <div className="grid grid-cols-12">

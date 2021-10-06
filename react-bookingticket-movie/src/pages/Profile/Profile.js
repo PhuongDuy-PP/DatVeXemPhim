@@ -7,6 +7,9 @@ import Swal from "sweetalert2";
 import { Redirect, Route } from "react-router";
 import { USER_LOGIN } from '../../util/settings/config';
 import _ from 'lodash';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 export default function Profile() {
     const { userLogin, thongTinNguoiDung, newUserInfor, loadingInfoUser } = useSelector(state => state.QuanLyNguoiDungReducer);
@@ -16,6 +19,25 @@ export default function Profile() {
         window.scrollTo(0, 0);
         dispatch(layThongTinNguoiDungAction());
     }, []);
+
+    const phoneRegExp =
+      /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+    const schema = yup.object().shape({
+      matKhau: yup.string().required("*Mật khẩu không được bỏ trống !"),
+      email: yup
+        .string()
+        .required("*Email không được bỏ trống !")
+        .email("* Email không hợp lệ "),
+      soDt: yup
+        .string()
+        .required("*Số điện thoại không được bỏ trống !")
+        .matches(phoneRegExp, "Số điện thoại không hợp lệ!"),
+      hoTen: yup.string().required("*Tên không được bỏ trống !"),
+    });
+
+    // sử dụng schema đã tạo ở trên vào RHF
+    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
     const [typePassword, settypePassword] = useState("password");
 
@@ -40,7 +62,7 @@ export default function Profile() {
     const [user, setUser] = useState({
         taiKhoan: userLogin.taiKhoan,
         email: newUserInfor.email ?? userLogin.email,
-        soDT: newUserInfor.soDT ?? userLogin.soDT,
+        soDt: newUserInfor.soDT ?? userLogin.soDT,
         maNhom: newUserInfor.maNhom ?? userLogin.maNhom,
         matKhau: newUserInfor.matKhau ?? thongTinNguoiDung.matKhau,
         maLoaiNguoiDung: newUserInfor?.maLoaiNguoiDung ?? userLogin.maLoaiNguoiDung,
@@ -52,11 +74,19 @@ export default function Profile() {
         history.push('/home');
         window.location.reload();
         return <Redirect to='/' />
-    }   
+    }
 
-    const printValues = e => {
-        e.preventDefault();
-        console.log({ user });
+    const printValues = (data) => {
+        // e.preventDefault();
+        // console.log({ user });
+        // console.log({ data })
+        let user = {
+            ...data,
+            taiKhoan: userLogin.taiKhoan,
+            maLoaiNguoiDung: userLogin.maLoaiNguoiDung,
+            maNhom: userLogin.maNhom
+        }
+        // console.log({user})
         dispatch(capNhatThongTinNguoiDungAction(user));
         Swal.fire({
             position: "center",
@@ -154,7 +184,7 @@ export default function Profile() {
     }
 
     return (
-        <div className="bg-gray-100 " style={{ minHeight: '140vh' }}>
+        <div className="bg-gray-100 " style={{ minHeight: '150vh' }}>
             <div className="pt-20"></div>
             {/* End of Navbar */}
             < div className="container mx-auto p-5" >
@@ -167,10 +197,10 @@ export default function Profile() {
                                 <img className="h-auto w-full mx-auto" src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg" alt />
                             </div>
                             <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">{userLogin.taiKhoan}</h1>
-                            <h3 className="text-gray-600 font-lg text-semibold leading-6">Owner at Her Company Inc.</h3>
-                            <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">Lorem ipsum dolor sit amet
-                                consectetur adipisicing elit.
-                                Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non deserunt</p>
+                            <h3 className="text-gray-600 font-lg text-semibold leading-6">{userLogin.maLoaiNguoiDung}</h3>
+                            <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
+                                Member of The BABY BOSS movie
+                            </p>
                             <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                                 <li className="flex items-center py-3">
                                     <span>Status</span>
@@ -190,7 +220,7 @@ export default function Profile() {
                         {/* Profile tab */}
                         {/* About Section */}
                         <div className="bg-white p-3 shadow-sm rounded-sm">
-                            <form onSubmit={printValues}>
+                            <form onSubmit={handleSubmit(printValues)}>
                                 <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
                                     <span clas="text-green-500">
                                         <svg className="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -204,6 +234,7 @@ export default function Profile() {
                                         <div className="grid grid-cols-2">
                                             <div className="px-4 py-2 font-semibold">Tài khoản</div>
                                             <input
+                                                style={{height: '30px'}}
                                                 className="cursor-not-allowed appearance-none block w-full bg-gray-200 text-gray-500 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                                 id="tai-khoan"
                                                 type="text"
@@ -214,7 +245,8 @@ export default function Profile() {
                                         </div>
                                         <div className="grid grid-cols-2">
                                             <div className="px-4 py-2 font-semibold">Họ tên</div>
-                                            <input
+                                            <input {...register("hoTen")}
+                                                style={{height: '30px'}}
                                                 className="appearance-none block w-full bg-gray-200 text-gray-500 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                                 id="ho-ten"
                                                 type="text"
@@ -223,10 +255,17 @@ export default function Profile() {
                                                 value={user.hoTen}
                                             >
                                             </input>
+                                            {/* Nếu có lỗi thì hiển thị nó ra cho người dùng */}
+                                            {errors.hoTen &&
+                                                <div className="col-start-2 alert alert-danger mt-2 text-center">
+                                                    <span> {errors.hoTen?.message}</span>
+                                                </div>
+                                            }
                                         </div>
-                                        <div className="grid grid-cols-2">
+                                        <div className="grid grid-cols-2 grid-row-2">
                                             <div className="px-4 py-2 font-semibold">Email</div>
-                                            <input
+                                            <input {...register("email")}
+                                                style={{height: '30px'}}
                                                 className="appearance-none block w-full bg-gray-200 text-gray-500 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                                 id="email"
                                                 type="text"
@@ -235,50 +274,70 @@ export default function Profile() {
                                                 value={user.email}
                                             >
                                             </input>
+                                            {/* Nếu có lỗi thì hiển thị nó ra cho người dùng */}
+                                            
+                                            {errors.email &&
+                                                <div 
+                                                    className="col-start-2 row-start-2 alert alert-danger mt-2 text-center"
+                                                >
+                                                    <span> {errors.email?.message}</span>
+                                                </div>
+                                            }
                                         </div>
-                                        <div className="grid grid-cols-2">
+                                        <div className="grid grid-cols-2 grid-row-2">
                                             <div className="px-4 py-2 font-semibold">Số điện thoại</div>
-                                            <input
+                                            <input {...register("soDt")}
+                                                style={{height: '30px'}}
                                                 className="appearance-none block w-full bg-gray-200 text-gray-500 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                                 id="phone-number"
                                                 type="text"
-                                                name="soDT"
+                                                name="soDt"
                                                 onChange={handleChange}
-                                                value={user.soDT}
+                                                value={user.soDt}
                                             >
                                             </input>
+                                            {errors.soDt &&
+                                                <div 
+                                                    className="col-start-2 alert alert-danger mt-2 text-center"
+                                                >
+                                                    <span> {errors.soDt?.message}</span>
+                                                </div>
+                                            }
                                         </div>
+                                        
                                         <div className="grid grid-cols-2">
                                             <div className="px-4 py-2 font-semibold">Mật khẩu</div>
                                             <label className="relative text-gray-400 focus-within:text-gray-600 block">
-                                                <input 
-                                                    type={typePassword} 
-                                                    name="matKhau" 
-                                                    id="password"  
+                                                <input {...register("matKhau")}
+                                                    style={{height: '30px'}}
+                                                    type={typePassword}
+                                                    name="matKhau"
+                                                    id="password"
                                                     onChange={handleChange}
-                                                    className="form-input border py-3 px-4 bg-gray-200 placeholder-gray-500 rounded text-gray-500 appearance-none w-full block pl-3 pr-9 focus:outline-none focus:bg-white" 
+                                                    className="form-input border py-3 px-4 bg-gray-200 placeholder-gray-500 rounded text-gray-500 appearance-none w-full block pl-3 pr-9 focus:outline-none focus:bg-white"
                                                     value={user.matKhau}
                                                 />
+                                                
                                                 <i onClick={handleToggleHidePassword}>
                                                     {typePassword !== "password" ? (
-                                                        <svg 
-                                                            xmlns="http://www.w3.org/2000/svg" 
-                                                            className="cursor-pointer w-6 h-6 absolute transform -translate-y-1/2 right-2" 
-                                                            style={{top: '40%'}}
-                                                            viewBox="0 0 24 24" 
-                                                            fill="none" 
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            className="cursor-pointer w-6 h-6 absolute transform -translate-y-1/2 right-2"
+                                                            style={{ top: '40%' }}
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
                                                             stroke="currentColor"
                                                         >
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                         </svg>
                                                     ) : (
-                                                        <svg 
-                                                            xmlns="http://www.w3.org/2000/svg" 
-                                                            className="cursor-pointer w-6 h-6 absolute transform -translate-y-1/2 right-2" 
-                                                            style={{top: '40%'}}
-                                                            viewBox="0 0 24 24" 
-                                                            fill="none" 
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            className="cursor-pointer w-6 h-6 absolute transform -translate-y-1/2 right-2"
+                                                            style={{ top: '40%' }}
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
                                                             stroke="currentColor"
                                                         >
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
@@ -286,10 +345,18 @@ export default function Profile() {
                                                     )}
                                                 </i>
                                             </label>
+                                            {errors.matKhau &&
+                                                    <div 
+                                                        className="col-start-2 row-start-2 alert alert-danger mt-2 text-center"
+                                                    >
+                                                        <span> {errors.matKhau?.message}</span>
+                                                    </div>
+                                            }
                                         </div>
                                         <div className="grid grid-cols-2">
                                             <div className="px-4 py-2 font-semibold">Loại người dùng</div>
                                             <input
+                                                style={{height: '30px'}}
                                                 className="form-control cursor-not-allowed appearance-none block w-full bg-gray-200 text-gray-500 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                                 id="loai-nguoi-dung"
                                                 type="text"
@@ -336,23 +403,23 @@ export default function Profile() {
                 </div>
             </div >
             {loadingInfoUser && (
-        
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            display: "flex",
-            backgroundColor: "rgb(255 255 255 / 67%)",
-            zIndex: 1000,
-          }}
-        >
-          Loading
-          {console.log('loading')}
-        </div>
-      )}
+
+                <div
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        right: 0,
+                        bottom: 0,
+                        left: 0,
+                        display: "flex",
+                        backgroundColor: "rgb(255 255 255 / 67%)",
+                        zIndex: 1000,
+                    }}
+                >
+                    Loading
+                    {console.log('loading')}
+                </div>
+            )}
         </div >
     )
 }

@@ -6,6 +6,7 @@
     "@ant-design/icons": "^4.6.4",
     "@aspnet/signalr": "^1.0.27",
     "@craco/craco": "^6.2.0",
+    "@hookform/resolvers": "^2.8.1",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@popperjs/core": "^2.10.1",

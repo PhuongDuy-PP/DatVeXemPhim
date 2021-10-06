@@ -50,16 +50,20 @@ function MultipleRowSlick(props) {
   }, []);
   const renderListMovieDangChieu = () => {
     let listMovie = [...props.listMovie];
-    if (listMovie && listMovie.length > 0) {
-      return props.listMovie.map((item) => {
+    let listMovieDangChieu = listMovie.filter(film => film.dangChieu === true )
+    // console.log({listMovieDangChieu})
+    if (listMovieDangChieu && listMovieDangChieu.length > 0) {
+      return listMovieDangChieu.map((item) => {
         return <Movie key={item.maPhim} Movie={item} LichChieu={"before"} />;
       });
     }
   };
   const renderListMovieSapChieu = () => {
-    let listMovieSapChieu = [...props.listMovieSapChieu];
+    let listMovie = [...props.listMovieSapChieu];
+    let listMovieSapChieu = listMovie.filter(film => film.sapChieu === true )
+    // console.log({listMovieSapChieu})
     if (listMovieSapChieu && listMovieSapChieu.length > 0) {
-      return props.listMovieSapChieu.map((item) => {
+      return listMovieSapChieu.map((item) => {
         return <Movie key={item.maPhim} Movie={item} LichChieu={"after"} />;
       });
     }

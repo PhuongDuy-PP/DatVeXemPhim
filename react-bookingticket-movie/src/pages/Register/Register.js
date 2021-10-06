@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { NavLink } from 'react-router-dom';
 import { useLocation, useHistory } from "react-router-dom";
-import { dangKyNguoiDungAction, resetErrorRegisterAction } from '../../redux/actions/QuanLyNguoiDungAction';
+import { dangKyNguoiDungAction, resetErrorLoginRegister } from '../../redux/actions/QuanLyNguoiDungAction';
 import { GROUPID } from '../../util/settings/config';
 import Swal from "sweetalert2";
 import { history } from '../../App';
@@ -45,7 +45,7 @@ export default function Register(props) {
 
     useEffect(() => {
         return () => {
-          dispatch(resetErrorRegisterAction());
+          dispatch(resetErrorLoginRegister());
         };
       }, []);
 

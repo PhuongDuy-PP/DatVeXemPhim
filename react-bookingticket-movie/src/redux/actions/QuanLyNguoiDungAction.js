@@ -3,8 +3,6 @@ import { DANG_NHAP_ACTION, SET_THONG_TIN_NGUOI_DUNG, SET_DANH_SACH_NGUOI_DUNG, C
 import {history} from '../../App'
 import { displayLoadingAction, hideLoadingAction } from "./LoadingAction";
 
-
-
 export const dangNhapAction = (thongTinDangNhap) => {
 
     return async (dispatch) => {
@@ -21,10 +19,14 @@ export const dangNhapAction = (thongTinDangNhap) => {
             }
             dispatch(layThongTinNguoiDungAction());
 
-            console.log('result', result);
+            // console.log('result', result);
 
         } catch (error) {
-            console.log('error', error.response.data);
+            console.log({error})
+            dispatch({
+                type: 'LOGIN_FAIL',
+                payload: error.response?.data ? error.response.data.content : error.message,
+              });
         }
     }
 }
@@ -47,7 +49,7 @@ export const layDanhSachNguoiDungAction = () => {
 
             }
 
-            console.log('result', result);
+            // console.log('result', result);
         } catch (error) {
             console.log('error', error.response.data);
         }
@@ -57,8 +59,9 @@ export const layDanhSachNguoiDungAction = () => {
 export const capNhatThongTinNguoiDungAction = (user) => {
     return async (dispatch) => {
     try{
+        // console.log({user})
         const result = await quanLyNguoiDungService.capNhatThongTinNguoiDung(user);
-        console.log(result);
+        // console.log(result);
         if (result.data.statusCode === 200) {
             dispatch({
                 type: CAP_NHAT_THONG_TIN_NGUOI_DUNG,
@@ -67,7 +70,7 @@ export const capNhatThongTinNguoiDungAction = (user) => {
 
         }
     } catch (error) {
-        console.log('error', error);
+        console.log({error});
         }
     }
 }
@@ -174,10 +177,10 @@ export const xoaNguoiDungAction = (taiKhoan) => {
     }
 }
 
-export const resetErrorRegisterAction = () => {
+export const resetErrorLoginRegister = () => {
     return (dispatch) => {
       dispatch({
-        type: 'RESET_ERROR_REGISTER',
+        type: 'RESET_ERROR_REGISTER_LOGIN',
       });
     };
   };

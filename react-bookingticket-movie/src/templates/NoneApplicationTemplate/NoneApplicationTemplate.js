@@ -1,10 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
 import { Route } from "react-router";
-import Footer from "./Layout/Footer/Footer";
-import Header from "./Layout/Header/Header";
-import Application from './Layout/Application/Application';
+import Footer from "../HomeTemplate/Layout/Footer/Footer";
+import Header from "../HomeTemplate/Layout/Header/Header";
 
-export const HomeTemplate = (props) => {    //path, exact, Component
+export const NoneApplicationTemplate = (props) => {    //path, exact, Component
     const { Component, ...restRoute } = props;
     const [isVisible, setIsVisible] = useState(false);
     useEffect(() => {
@@ -56,7 +55,6 @@ export const HomeTemplate = (props) => {    //path, exact, Component
                 </i>
                 </span>
             )}
-            <Application />
             <Footer />
         </Fragment>
     }} />

@@ -9,6 +9,7 @@ if(localStorage.getItem(USER_LOGIN)) {
 
 const stateDefault = {
     userLogin: user,
+    errorLogin: null,
     thongTinNguoiDung: {},
     danhSachNguoiDung: [],
 
@@ -29,12 +30,23 @@ export const QuanLyNguoiDungReducer = (state = stateDefault, action) => {
 
     switch (action.type) {
 
+        case 'LOGIN_REQUEST': {
+            return { ...state, errorLogin: null }; // error: null trong trường error đang báo lỗi, nhấn đăng nhập lại thì cần reset lại không báo lỗi nữa
+          }
+
         case DANG_NHAP_ACTION : {
             const {thongTinDangNhap} = action;
             localStorage.setItem(USER_LOGIN,JSON.stringify(thongTinDangNhap));
             localStorage.setItem(TOKEN,thongTinDangNhap.accessToken);
             return {...state, userLogin:thongTinDangNhap}
         }
+
+        case 'LOGIN_FAIL': {
+            return {
+              ...state,
+              errorLogin: action.payload
+            };
+          }
 
         case SET_THONG_TIN_NGUOI_DUNG :{ 
             state.thongTinNguoiDung = action.thongTinNguoiDung;
@@ -120,11 +132,11 @@ export const QuanLyNguoiDungReducer = (state = stateDefault, action) => {
               };
         }
 
-        case 'RESET_ERROR_LOGIN_REGISTER': {
+        case 'RESET_ERROR_REGISTER_LOGIN': {
             return {
               ...state,
               errorRegister: null,
-              
+              errorLogin: null,
             };
           }
 

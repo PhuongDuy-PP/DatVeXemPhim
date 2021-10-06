@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { dangNhapAction } from '../../redux/actions/QuanLyNguoiDungAction';
+import { dangNhapAction, resetErrorLoginRegister } from '../../redux/actions/QuanLyNguoiDungAction';
+import * as yup from "yup";
 
 export default function Login(props) {
     const [typePassword, settypePassword] = useState("password");
+    const { userLogin, errorLogin } = useSelector(state => state.QuanLyNguoiDungReducer);
 
     const handleToggleHidePassword = () => {
         if (typePassword === "password") {
@@ -15,25 +17,36 @@ export default function Login(props) {
         }
     };
 
+    // useEffect(() => {
+    //     return () => {
+    //         dispatch(resetErrorLoginRegister());
+    //     };
+    // }, []);
+
     const dispatch = useDispatch();
 
-    const {userLogin} = useSelector(state=>state.QuanLyNguoiDungReducer);
+    // console.log('userLogin',userLogin)
 
-    console.log('userLogin',userLogin)
+    const signupUserSchema = yup.object().shape({
+        taiKhoan: yup.string().required("*Tài khoản không được bỏ trống !"),
+        matKhau: yup.string().required("*Mật khẩu không được bỏ trống !"),
+    });
 
     const formik = useFormik({
         initialValues: {
-          taiKhoan: '',
-          matKhau: '',
+            taiKhoan: '',
+            matKhau: '',
         },
+        validationSchema: signupUserSchema,
         onSubmit: values => {
-            console.log('values',values);
+            console.log('values', values);
             const action = dangNhapAction(values);
             dispatch(action);
+            // console.log({ errorLogin });
         },
-      });
-
-      return (
+    });
+    console.log({ errorLogin });
+    return (
         <form onSubmit={formik.handleSubmit} className="lg:w-1/2 xl:max-w-screen-sm">
             <div className="py-12 bg-indigo-100 lg:bg-white flex justify-center lg:justify-start lg:px-12">
                 <div className="cursor-pointer flex items-center">
@@ -57,11 +70,14 @@ export default function Login(props) {
                     <div>
                         <div>
                             <div className="text-sm font-bold text-gray-700 tracking-wide">Tài khoản</div>
-                            <input name="taiKhoan" onChange={formik.handleChange} className="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"  placeholder="Nhập vào tài khoản" />
+                            <input name="taiKhoan" onChange={formik.handleChange} className="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" placeholder="Nhập vào tài khoản" />
+                            {formik.errors.taiKhoan && formik.touched.taiKhoan && (
+                                <p className="text-red-500">{formik.errors.taiKhoan}</p>
+                            )}
                         </div>
                         <div className="mt-8 relative">
                             <div className="flex justify-between items-center">
-                                <div  className="text-sm font-bold text-gray-700 tracking-wide">
+                                <div className="text-sm font-bold text-gray-700 tracking-wide">
                                     Mật khẩu
                                 </div>
                                 <div>
@@ -71,46 +87,55 @@ export default function Login(props) {
                                     </a>
                                 </div>
                             </div>
-                            <input type={typePassword} name="matKhau" onChange={formik.handleChange} className="w-full text-lg py-2 pr-9 border-b border-gray-300 focus:outline-none focus:border-indigo-500"  placeholder="Nhập vào mật khẩu" />
+                            <input type={typePassword} name="matKhau" onChange={formik.handleChange} className="w-full text-lg py-2 pr-9 border-b border-gray-300 focus:outline-none focus:border-indigo-500" placeholder="Nhập vào mật khẩu" />
                             <i onClick={handleToggleHidePassword}>
                                 {typePassword !== "password" ? (
-                                    <svg 
-                                        xmlns="http://www.w3.org/2000/svg" 
-                                        className="cursor-pointer w-6 h-6 absolute transform -translate-y-1/2 right-2" 
-                                        style={{top: '68%'}}
-                                        viewBox="0 0 24 24" 
-                                        fill="none" 
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="cursor-pointer w-6 h-6 absolute transform -translate-y-1/2 right-2"
+                                        style={{ top: '68%' }}
+                                        viewBox="0 0 24 24"
+                                        fill="none"
                                         stroke="currentColor"
                                     >
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
                                 ) : (
-                                    <svg 
-                                        xmlns="http://www.w3.org/2000/svg" 
-                                        className="cursor-pointer w-6 h-6 absolute transform -translate-y-1/2 right-2" 
-                                        style={{top: '68%'}}
-                                        viewBox="0 0 24 24" 
-                                        fill="none" 
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="cursor-pointer w-6 h-6 absolute transform -translate-y-1/2 right-2"
+                                        style={{ top: '68%' }}
+                                        viewBox="0 0 24 24"
+                                        fill="none"
                                         stroke="currentColor"
                                     >
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                                     </svg>
                                 )}
                             </i>
+                            {formik.errors.matKhau && formik.touched.matKhau && (
+                                <p className="text-red-500 absolute">{formik.errors.matKhau}</p>
+                            )}
                         </div>
                         <div className="mt-10">
                             <button className="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
                   font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
                   shadow-lg">
                                 Đăng nhập
-    </button>
+                            </button>
                         </div>
                     </div>
+                    {errorLogin && (
+                            <div className="alert alert-danger mt-2 text-center">
+                                <span> {errorLogin}</span>
+                            </div>
+                        )}
                     <div className="mt-12 text-sm font-display font-semibold text-gray-700 text-center">
                         Bạn chưa có tài khoản ? <NavLink to="/register" className="cursor-pointer text-indigo-600 hover:text-indigo-800">Đăng ký</NavLink>
                     </div>
                 </div>
+
             </div>
         </form>
     )

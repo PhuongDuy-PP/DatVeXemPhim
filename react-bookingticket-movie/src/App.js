@@ -2,6 +2,7 @@ import './App.css';
 import {createBrowserHistory} from 'history';
 import { Router, Switch, Route } from 'react-router';
 import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate';
+import { NoneApplicationTemplate } from './templates/NoneApplicationTemplate/NoneApplicationTemplate';
 import Home from './pages/Home/Home';
 import Contact from './pages/Contact/Contact';
 import News from './pages/News/News';
@@ -22,7 +23,6 @@ import Edit from './pages/Admin/Films/Edit/Edit';
 import AddUser from './pages/Admin/Dashboard/AddUser/AddUser';
 import NotFound from './pages/NotFound/NotFound';
 import ModalTrailer from './components/ModalTrailer/index';
-
 import { Suspense, lazy } from 'react'
 import EditUser from './pages/Admin/Dashboard/EditUser/EditUser';
 
@@ -37,10 +37,10 @@ function App() {
       <ModalTrailer />
       <Switch>
         <HomeTemplate path="/home" exact Component={Home} />
-        <HomeTemplate path="/contact" exact Component={Contact} />
+        <NoneApplicationTemplate path="/contact" exact Component={Contact} />
         <HomeTemplate path="/news" exact Component={News} />
-        <HomeTemplate path="/detail/:id" exact Component={Detail} />
-        <HomeTemplate path="/profile" exact Component={Profile} />
+        <NoneApplicationTemplate path="/detail/:id" exact Component={Detail} />
+        <NoneApplicationTemplate path="/profile" exact Component={Profile} />
 
         <CheckoutTemplate path="/checkout/:id" exact Component={Checkout} />
         <UserTemplate path="/login" exact Component={Login} />
