@@ -89,10 +89,8 @@ export const dangKyNguoiDungAction = (newUser) => {
             // console.log({error})
             dispatch({
                 type: 'SET_DANG_KY_NGUOI_DUNG_FAIL',
-                payload: {
-                  error: error.response.data.content,
-                },
-            });
+                payload: error.response?.data ? error.response.data.content : error.message,
+                });
         }
     }
 }
@@ -133,9 +131,7 @@ export const adminThemNguoiDungAction = (newUser) => {
             // console.log('error', error.response.data);
             dispatch({
                 type: 'SET_ADMIN_THEM_NGUOI_DUNG_FAIL',
-                payload: {
-                  error: error.response.data.content,
-                },
+                payload: error.response?.data ? error.response.data.content : error.message,
             });
         }
     }

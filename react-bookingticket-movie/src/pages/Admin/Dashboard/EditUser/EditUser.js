@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
-import { adminThemNguoiDungAction, adminLayThongTinNguoiDungAction, adminCapNhatThongTinNguoiDungAction } from '../../../../redux/actions/QuanLyNguoiDungAction';
+import { adminThemNguoiDungAction, adminLayThongTinNguoiDungAction, adminCapNhatThongTinNguoiDungAction, resetErrorLoginRegister } from '../../../../redux/actions/QuanLyNguoiDungAction';
 import Swal from "sweetalert2";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
@@ -26,6 +26,7 @@ function EditUser(props) {
     console.log({props})
 
     useEffect(() => {
+        dispatch(resetErrorLoginRegister())
         const taiKhoan = props.match.params.taiKhoan;
         if (props.listUser) {
           let user = props.listUser.find((item) => {

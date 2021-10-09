@@ -5,6 +5,7 @@ import { Input, Space } from 'antd';
 import { AudioOutlined, EditOutlined, SearchOutlined, DeleteOutlined, CalendarOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { layDanhSachPhimAction, xoaPhimAction } from '../../../redux/actions/QuanLyPhimAction';
+import { resetErrorLoginRegister } from '../../../redux/actions/QuanLyNguoiDungAction';
 import { NavLink } from 'react-router-dom';
 import { history } from '../../../App';
 const { Search } = Input;
@@ -19,7 +20,7 @@ export default function Films() {
 
     useEffect(() => {
         dispatch(layDanhSachPhimAction());
-
+        dispatch(resetErrorLoginRegister());
     }, [])
 
     const columns = [

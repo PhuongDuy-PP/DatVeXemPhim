@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Form,
   Input,
@@ -17,11 +17,16 @@ import { useDispatch } from 'react-redux';
 import { themPhimUploadHinhAction } from '../../../../redux/actions/QuanLyPhimAction';
 import { GROUPID } from '../../../../util/settings/config';
 import _ from 'lodash';
+import { resetErrorLoginRegister } from '../../../../redux/actions/QuanLyNguoiDungAction';
 
 const AddNew = () => {
   const [componentSize, setComponentSize] = useState('default');
   const [imgSrc, setImgSrc] = useState('');
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(resetErrorLoginRegister());
+  }, [])
 
   const formik = useFormik({
     initialValues: {

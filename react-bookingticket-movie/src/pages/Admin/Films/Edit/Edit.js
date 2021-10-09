@@ -17,6 +17,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { capNhatPhimUploadAction, layThongTinPhimAction, themPhimUploadHinhAction } from '../../../../redux/actions/QuanLyPhimAction';
 import { GROUPID } from '../../../../util/settings/config';
+import { resetErrorLoginRegister } from '../../../../redux/actions/QuanLyNguoiDungAction';
 
 const Edit = (props) => {
 
@@ -30,7 +31,7 @@ const Edit = (props) => {
     let { id } = props.match.params;
 
     dispatch(layThongTinPhimAction(id));
-
+    dispatch(resetErrorLoginRegister());
 
   }, [])
 

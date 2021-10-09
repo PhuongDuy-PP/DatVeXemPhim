@@ -25,6 +25,8 @@ import NotFound from './pages/NotFound/NotFound';
 import ModalTrailer from './components/ModalTrailer/index';
 import { Suspense, lazy } from 'react'
 import EditUser from './pages/Admin/Dashboard/EditUser/EditUser';
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 
@@ -58,7 +60,9 @@ function App() {
         <AdminTemplate path="/admin/showtimes" exact Component={Showtime} />
         <HomeTemplate path="/" exact Component={Home} />
         <Route component={NotFound} />
+       
       </Switch>
+      <ToastContainer autoClose={3000}  />
     </Router>
   );
 }

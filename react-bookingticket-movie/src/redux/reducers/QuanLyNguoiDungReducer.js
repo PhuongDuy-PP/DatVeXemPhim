@@ -127,7 +127,7 @@ export const QuanLyNguoiDungReducer = (state = stateDefault, action) => {
         case 'SET_ADMIN_THEM_NGUOI_DUNG_FAIL': {
             return {
                 ...state,
-                errorRegister: action.payload.error,
+                errorRegister: action.payload,
                 loadingRegister: false,
               };
         }

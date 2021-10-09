@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Table } from 'antd';
-import { layDanhSachNguoiDungAction, timKiemNguoiDungAction, xoaNguoiDungAction } from '../../../redux/actions/QuanLyNguoiDungAction';
+import { layDanhSachNguoiDungAction, timKiemNguoiDungAction, xoaNguoiDungAction, resetErrorLoginRegister } from '../../../redux/actions/QuanLyNguoiDungAction';
 import { AudioOutlined, EditOutlined, SearchOutlined, DeleteOutlined,CalendarOutlined } from '@ant-design/icons';
 import { NavLink } from 'react-router-dom';
 import { history } from '../../../App';
@@ -17,6 +17,7 @@ function Dashboard(props) {
 
     useEffect(() => {
         props.fetchListUser();
+        dispatch(resetErrorLoginRegister())
         // dispatch(layDanhSachNguoiDungAction());
     }, []);
     // console.log('arrFilmDefault', danhSachNguoiDung);
