@@ -7,7 +7,7 @@ export const layDanhSachHeThongRapAction = () => {
         try {
             const result = await quanLyRapService.layDanhSachHeThongRap();
 
-            console.log('result', result.data.content);
+            // console.log('result', result.data.content);
             if(result.status === 200) {
                 dispatch({
                     type: SET_HE_THONG_RAP_CHIEU,
@@ -25,7 +25,7 @@ export const layThongTinChiTietPhim = (id) => {
         try{
             const result = await quanLyRapService.layThongTinLichChieuPhim(id);
 
-            console.log('result',result);
+            // console.log('result',result);
             //Lấy được dữ liệu từ api về  => reducer
 
             dispatch({

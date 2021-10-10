@@ -62,7 +62,7 @@ function App() {
         <Route component={NotFound} />
        
       </Switch>
-      <ToastContainer autoClose={3000}  />
+      <ToastContainer  />
     </Router>
   );
 }

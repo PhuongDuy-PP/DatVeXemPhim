@@ -86,7 +86,7 @@ export const dangKyNguoiDungAction = (newUser) => {
                 });
             }
         } catch (error) {
-            // console.log({error})
+            console.log({error})
             dispatch({
                 type: 'SET_DANG_KY_NGUOI_DUNG_FAIL',
                 payload: error.response?.data ? error.response.data.content : error.message,
@@ -105,14 +105,12 @@ export const adminCapNhatThongTinNguoiDungAction = (userDetail) => {
                     userUpdate: result.data.content
                 });
             }
-            console.log({result})
+            // console.log({result})
         } catch (error) {
-            // dispatch({
-            //     type: 'SET_ADMIN_CAP_NHAT_NGUOI_DUNG_FAIL',
-            //     payload: {
-            //       error: error.response.data.content,
-            //     },
-            // });
+            dispatch({
+                type: 'SET_ADMIN_CAP_NHAT_NGUOI_DUNG_FAIL',
+                payload: error.response?.data ? error.response.data.content : error.message,
+            });
         }
     }
 }
@@ -162,7 +160,7 @@ export const xoaNguoiDungAction = (taiKhoan) => {
         try {
             //Sử dụng tham số thamSo
             const result = await quanLyNguoiDungService.xoaNguoiDung(taiKhoan);
-            console.log('result',result.data.content);
+            // console.log('result',result.data.content);
             alert('Xoá người dùng thành công !');
             //Sau khi xoá load lại danh sách phim mới;
             dispatch(layDanhSachNguoiDungAction())
@@ -186,7 +184,7 @@ export const adminLayThongTinNguoiDungAction = (taiKhoan) => {
         try {
             dispatch(displayLoadingAction);
             const result = await quanLyNguoiDungService.adminLayThongTinNguoiDung(taiKhoan);
-            console.log({result})
+            // console.log({result})
             if (result.data.statusCode === 200) {
                 dispatch({
                     type: 'SET_ADMIN_GET_USER_SUCCESS',
@@ -195,7 +193,7 @@ export const adminLayThongTinNguoiDungAction = (taiKhoan) => {
             }
             await dispatch(hideLoadingAction);
 
-            console.log('result', result);
+            // console.log('result', result);
         } catch (error) {
             console.log({error});
             dispatch({
@@ -226,7 +224,7 @@ export const layThongTinNguoiDungAction = () => {
             }
             await dispatch(hideLoadingAction);
 
-            console.log('result', result);
+            // console.log('result', result);
 
         } catch (error) {
             console.log('error', error.response.data);

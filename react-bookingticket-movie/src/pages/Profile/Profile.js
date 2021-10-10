@@ -402,24 +402,7 @@ export default function Profile() {
                     </div>
                 </div>
             </div >
-            {loadingInfoUser && (
-
-                <div
-                    style={{
-                        position: "fixed",
-                        top: 0,
-                        right: 0,
-                        bottom: 0,
-                        left: 0,
-                        display: "flex",
-                        backgroundColor: "rgb(255 255 255 / 67%)",
-                        zIndex: 1000,
-                    }}
-                >
-                    Loading
-                    {console.log('loading')}
-                </div>
-            )}
+            
         </div >
     )
 }

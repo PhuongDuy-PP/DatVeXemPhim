@@ -24,7 +24,7 @@ export const themPhimUploadHinhAction = (formData) => {
 
             let result = await quanLyPhimService.themPhimUploadHinh(formData);
             alert('Thêm phim thành công!')
-            console.log('result', result.data.content);
+            // console.log('result', result.data.content);
 
 
             
@@ -41,7 +41,7 @@ export const capNhatPhimUploadAction = (formData) => {
 
             let result = await quanLyPhimService.capNhatPhimUpload(formData);
             alert('Cập nhật phim thành công!')
-            console.log('result', result.data.content);
+            // console.log('result', result.data.content);
 
             dispatch(layDanhSachPhimAction());
             history.push('/admin/films');
@@ -83,7 +83,7 @@ export const xoaPhimAction = (maPhim) => {
         try {
             //Sử dụng tham số thamSo
             const result = await quanLyPhimService.xoaPhim(maPhim);
-            console.log('result',result.data.content);
+            // console.log('result',result.data.content);
             alert('Xoá phim thành công !');
             //Sau khi xoá load lại danh sách phim mới;
             dispatch(layDanhSachPhimAction())

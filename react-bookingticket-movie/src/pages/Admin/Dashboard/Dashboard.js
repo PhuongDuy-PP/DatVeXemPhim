@@ -116,10 +116,10 @@ function Dashboard(props) {
       }
 
     return (
-        <div className="mt-16">
+        <div className="mt-20">
             <h3 className="text-4xl">Quản lý người dùng</h3>
             <button 
-                className="mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded"
+                className="mb-5 pt-2 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded"
                 onClick={() => {
                     history.push('/admin/users/addnew');
                 }}

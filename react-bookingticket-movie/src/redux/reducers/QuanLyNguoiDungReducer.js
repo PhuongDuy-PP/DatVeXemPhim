@@ -13,10 +13,10 @@ const stateDefault = {
     thongTinNguoiDung: {},
     danhSachNguoiDung: [],
 
-    responseAdminUpdateUserSuccess: {},
+    responseAdminUpdateUserSuccess: null,
     isUpdateSuccess: false,
     getUser: {},
-    isUpdateFail: false,
+    errorUpdate: null,
 
     loadingInfoUser: false,
     newUserInfor: {},
@@ -88,6 +88,7 @@ export const QuanLyNguoiDungReducer = (state = stateDefault, action) => {
         case 'SET_ADMIN_CAP_NHAT_NGUOI_DUNG_SUCCESS': {
             state.responseAdminUpdateUserSuccess = action.userUpdate;
             state.getUser = action.userUpdate;
+            state.errorUpdate = null;
             return {
                 ...state,
             };
@@ -96,7 +97,8 @@ export const QuanLyNguoiDungReducer = (state = stateDefault, action) => {
         case 'SET_ADMIN_CAP_NHAT_NGUOI_DUNG_FAIL': {
             return {
                 ...state,
-                isUpdateFail: true
+                errorUpdate: action.payload,
+                responseAdminUpdateUserSuccess: null,
             };
         }
 
@@ -112,6 +114,7 @@ export const QuanLyNguoiDungReducer = (state = stateDefault, action) => {
             return {
                 ...state,
                 responseRegister: action.newUser,
+                errorRegister: null,
                 loadingRegister: false
               };
         }
@@ -119,7 +122,7 @@ export const QuanLyNguoiDungReducer = (state = stateDefault, action) => {
         case 'SET_DANG_KY_NGUOI_DUNG_FAIL': {
             return {
                 ...state,
-                errorRegister: action.payload.error,
+                errorRegister: action.payload,
                 loadingRegister: false,
               };
         }
@@ -137,6 +140,9 @@ export const QuanLyNguoiDungReducer = (state = stateDefault, action) => {
               ...state,
               errorRegister: null,
               errorLogin: null,
+              responseAdminUpdateUserSuccess: null,
+              errorUpdate: null,
+              responseRegister: null,
             };
           }
 

@@ -20,7 +20,7 @@ export const layChiTietPhongVeAction = (maLichChieu) => {
 
 
         } catch (error) {
-            console.log('error', error);
+            // console.log('error', error);
             console.log('error', error.response?.data);
         }
     }
@@ -36,7 +36,7 @@ export const datVeAction = (thongTinDatVe = new ThongTinDatVe()) => {
             dispatch(displayLoadingAction)
 
             const result = await quanLyDatVeService.datVe(thongTinDatVe);
-            console.log(result.data.content);
+            // console.log(result.data.content);
             //Đặt vé thành công gọi api load lại phòng vé
             await dispatch(layChiTietPhongVeAction(thongTinDatVe.maLichChieu))
             await dispatch({type:DAT_VE_HOAN_TAT})
@@ -66,9 +66,9 @@ export const datGheAction = (ghe,maLichChieu) => {
         let danhSachGheDangDat = getState().QuanLyDatVeReducer.danhSachGheDangDat;
         let taiKhoan = getState().QuanLyNguoiDungReducer.userLogin.taiKhoan;
 
-        console.log('danhSachGheDangDat',danhSachGheDangDat);
-        console.log('taiKhoan',taiKhoan);
-        console.log('maLichChieu',maLichChieu);
+        // console.log('danhSachGheDangDat',danhSachGheDangDat);
+        // console.log('taiKhoan',taiKhoan);
+        // console.log('maLichChieu',maLichChieu);
         //Biến mảng thành chuỗi
         danhSachGheDangDat = JSON.stringify(danhSachGheDangDat);
 
